@@ -1,11 +1,24 @@
 package br.com.projetofinal.cordeirostyle.entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_categoria",
+        scope = Categoria.class
+)
+
 
 @Entity
 @Table(name="categoria")
@@ -13,8 +26,8 @@ public class Categoria {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="categoria_id")
-	private Integer categoriaId;
+	@Column(name="id_categoria")
+	private Integer id_categoria;
 	
 	@Column(name="nome")
 	private String nome;
@@ -22,12 +35,16 @@ public class Categoria {
 	@Column(name="descricao")
 	private String descricao;
 
-	public Integer getCategoriaId() {
-		return categoriaId;
+	@OneToMany(mappedBy = "categoria")
+	private List<Produto> produto;
+	
+	
+	public Integer getId_categoria() {
+		return id_categoria;
 	}
 
-	public void setCategoriaId(Integer categoriaId) {
-		this.categoriaId = categoriaId;
+	public void setId_categoria(Integer id_categoria) {
+		this.id_categoria = id_categoria;
 	}
 
 	public String getNome() {
@@ -44,6 +61,14 @@ public class Categoria {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
 	}
 	
 	

@@ -3,6 +3,9 @@ package br.com.projetofinal.cordeirostyle.entities;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +14,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_produto",
+        scope = Produto.class
+)
 
 @Entity
 @Table(name = "produto")
@@ -38,15 +48,13 @@ public class Produto {
 	
 	@Column(name = "imagem")
 	private Byte imagem;
-	
-	/*
+
 	@ManyToOne
-	@JoinColumn(name = "id_categoria")
+	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
-	 */
+	 
 	public Produto(String nome, String descricao, int qtd_estoque,double valor_unitario,
-			Byte imagem
-			//Categoria categoria
+			Byte imagem,Categoria categoria
 			) 
 	{
 		this.nome = nome;
@@ -54,7 +62,7 @@ public class Produto {
 		this.qtd_estoque = qtd_estoque;
 		this.valor_unitario = valor_unitario;
 		this.imagem = imagem;
-		//this.categoria = categoria;
+		this.categoria = categoria;
 	}
 
 	public Produto() {}
@@ -111,7 +119,7 @@ public class Produto {
 		this.imagem = imagem;
 	}
 
-/*
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -119,5 +127,5 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-*/
+
 }
