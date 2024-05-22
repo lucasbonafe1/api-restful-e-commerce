@@ -37,10 +37,10 @@ public class Pedido {
 	private LocalDate data_envio;
 	
 	@Column(name = "status")
-	private String status;
+	private Boolean status;
 	
 	@Column(name = "valor_total")
-	private Integer valor_total;
+	private Double valor_total;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id") 
@@ -78,22 +78,21 @@ public class Pedido {
 		this.data_envio = data_envio;
 	}
 
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
-	public Integer getValor_total() {
+	public Double getValor_total() {
 		return valor_total;
 	}
 
-	public void setValor_total(Integer valor_total) {
+	public void setValor_total(Double valor_total) {
 		this.valor_total = valor_total;
 	}
-	
 	
 	public Cliente getCliente() {
 		return cliente;
