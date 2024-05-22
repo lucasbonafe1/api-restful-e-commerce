@@ -47,7 +47,7 @@ public class Produto {
 	private double valor_unitario;
 	
 	@Column(name = "imagem")
-	private Byte imagem;
+	private byte[] imagem;
 
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
@@ -57,7 +57,7 @@ public class Produto {
 	private List<ItemPedido> itensPedidos;
 
 	public Produto(String nome, String descricao, int qtd_estoque,double valor_unitario,
-			Byte imagem,Categoria categoria
+			byte[] imagem,Categoria categoria
 			) 
 	{
 		this.nome = nome;
@@ -114,11 +114,11 @@ public class Produto {
 		this.valor_unitario = valor_unitario;
 	}
 
-	public Byte getImagem() {
+	public byte[] getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(Byte imagem) {
+	public void setImagem(byte[] imagem) {
 		this.imagem = imagem;
 	}
 
