@@ -1,7 +1,6 @@
 package br.com.projetofinal.cordeirostyle.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -12,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -24,6 +22,7 @@ import jakarta.persistence.Table;
         scope = Cliente.class
 )
 public class Cliente {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cliente")
@@ -44,12 +43,10 @@ public class Cliente {
 	@Column(name = "data_nascimento")
 	private LocalDate data_nascimento;
 	
+	
 	@OneToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
-	
-	@OneToMany(mappedBy = "cliente")
-	private List<Pedido> pedidos;
 	
 	
 	public Integer getId_cliente() {
@@ -106,14 +103,6 @@ public class Cliente {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 	
 }

@@ -2,6 +2,8 @@ package br.com.projetofinal.cordeirostyle.entities;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -10,8 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @JsonIdentityInfo(
@@ -42,9 +42,11 @@ public class Pedido {
 	@Column(name = "valor_total")
 	private Double valor_total;
 	
+	/*
 	@ManyToOne
 	@JoinColumn(name = "cliente_id") 
 	private Cliente cliente;
+	*/
 	
 	public Integer getId_pedido() {
 		return id_pedido;
@@ -94,11 +96,17 @@ public class Pedido {
 		this.valor_total = valor_total;
 	}
 	
+<<<<<<< HEAD
+=======
+	/*
+>>>>>>> parent of 54effed (feat: cardinalidade entre Pedido e Cliente)
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
+	}*/
+	
+	
 }
