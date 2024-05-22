@@ -1,7 +1,7 @@
 package br.com.projetofinal.cordeirostyle.entities;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -13,8 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -50,9 +50,12 @@ public class Produto {
 	private Byte imagem;
 
 	@ManyToOne
-	@JoinColumn(name = "categoria_id")
+	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
-	 
+	
+	@OneToMany(mappedBy = "produto")
+	private List<ItemPedido> itensPedidos;
+
 	public Produto(String nome, String descricao, int qtd_estoque,double valor_unitario,
 			Byte imagem,Categoria categoria
 			) 
@@ -126,6 +129,18 @@ public class Produto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public void setData_cadastro(LocalDate data_cadastro) {
+		this.data_cadastro = data_cadastro;
+	}
+	
+	public void setItensPedidos(List<ItemPedido> itensPedidos) {
+		this.itensPedidos = itensPedidos;
+	}
+	
+	public List<ItemPedido> getItensPedidos() {
+		return itensPedidos;
 	}
 
 }
