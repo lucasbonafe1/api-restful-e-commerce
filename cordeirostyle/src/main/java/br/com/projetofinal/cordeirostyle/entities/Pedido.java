@@ -42,7 +42,7 @@ public class Pedido {
 	private Boolean status;
 	
 	@Column(name = "valor_total")
-	private Double valor_total;
+	private double valor_total;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_cliente") 
@@ -91,12 +91,12 @@ public class Pedido {
 		this.status = status;
 	}
 
-	public Double getValor_total() {
-		return valor_total;
+	public double getValor_total() {
+		return calcValorTotal();
 	}
 
-	public void setValor_total(Double valor_total) {
-		this.valor_total = valor_total;
+	public void setValor_total(double valor_total) {
+		this.valor_total = calcValorTotal();
 	}
 	
 	public Cliente getCliente() {
@@ -113,6 +113,18 @@ public class Pedido {
 
 	public void setItensPedidos(List<ItemPedido> itensPedidos) {
 		this.itensPedidos = itensPedidos;
+	}
+	// Tem que criar categoria, produto, pedido e item pedido
+	public double calcValorTotal() {
+		double valorTotal = 0;
+		try {
+		for (ItemPedido itemPedido : itensPedidos) {
+			valorTotal += itemPedido.getValor_liquido();
+		}
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		return valorTotal;
 	}
 	
 }

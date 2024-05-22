@@ -21,16 +21,16 @@ public class ItemPedido {
 	private Integer quantidade;
 	
 	@Column(name = "preco_venda")
-	private Float preco_venda;
+	private double preco_venda;
 	
 	@Column(name = "percentual_desconto")
-	private Float percentual_desconto;
+	private double percentual_desconto;
 	
 	@Column(name = "valor_bruto")
-	private Float valor_bruto;
+	private double valor_bruto;
 	
 	@Column(name = "valor_liquido")
-	private Float valor_liquido;
+	private double valor_liquido;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_pedido")
@@ -56,35 +56,35 @@ public class ItemPedido {
 		this.quantidade = quantidade;
 	}
 
-	public Float getPreco_venda() {
+	public double getPreco_venda() {
 		return preco_venda;
 	}
 
-	public void setPreco_venda(Float preco_venda) {
+	public void setPreco_venda(double preco_venda) {
 		this.preco_venda = preco_venda;
 	}
 
-	public Float getPercentual_desconto() {
+	public double getPercentual_desconto() {
 		return percentual_desconto * 100;
 	}
 
-	public void setPercentual_desconto(Float percentual_desconto) {
+	public void setPercentual_desconto(double percentual_desconto) {
 		this.percentual_desconto = percentual_desconto/100;
 	}
 
-	public Float getValor_bruto() {
+	public double getValor_bruto() {
 		return calcValorBruto();
 	}
 
-	public void setValor_bruto(Float valor_bruto) {
+	public void setValor_bruto(double valor_bruto) {
 		this.valor_bruto = calcValorBruto();
 	}
 
-	public Float getValor_liquido() {
+	public double getValor_liquido() {
 		return calcValorLiquido();
 	}
 
-	public void setValor_liquido(Float valor_liquido) {
+	public void setValor_liquido(double valor_liquido) {
 		this.valor_liquido = calcValorLiquido();
 	}
 	
@@ -107,15 +107,15 @@ public class ItemPedido {
 
 	
 	
-	public Float calcValorBruto() {
-		Float valorFinal = this.preco_venda*this.quantidade;
+	public double calcValorBruto() {
+		double valorFinal = this.preco_venda*this.quantidade;
 		return valorFinal;
 	}
 	
-	public Float calcValorLiquido() {
-		Float valorBruto = calcValorBruto();
-		Float valorDesconto = valorBruto * this.percentual_desconto;
-		Float valorLiquido = valorBruto - valorDesconto;
+	public double calcValorLiquido() {
+		double valorBruto = calcValorBruto();
+		double valorDesconto = valorBruto * this.percentual_desconto;
+		double valorLiquido = valorBruto - valorDesconto;
 		return valorLiquido;
 	}
 	
