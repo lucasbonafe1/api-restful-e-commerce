@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.services.ItemPedidoService;
 
@@ -27,7 +28,7 @@ public class ItemPedidoController {
 	public ResponseEntity<List<ItemPedido>> findAll() {
 		return new ResponseEntity<>(itemPedidoService.findAll(), HttpStatus.OK);
 	}
-
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<ItemPedido> findById(@PathVariable Integer id) {
 		ItemPedido itemEncontrado = itemPedidoService.findById(id);
@@ -61,6 +62,21 @@ public class ItemPedidoController {
 		}
 		itemPedidoService.deleteById(id);
 		return new ResponseEntity<>(itemDeletado, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto")
+	public ResponseEntity<List<ItemPedidoDto>> findAllDto() {
+		return new ResponseEntity<>(itemPedidoService.findAllDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<ItemPedidoDto> findByIdDto(@PathVariable Integer id) {
+		ItemPedidoDto itemEncontrado = itemPedidoService.findByIdDto(id);
+		if (itemEncontrado == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(itemEncontrado,HttpStatus.OK);
+		}
 	}
 
 }
