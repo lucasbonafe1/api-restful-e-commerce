@@ -1,12 +1,17 @@
 package br.com.projetofinal.cordeirostyle.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
+import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.ProdutoRepository;
 
@@ -16,7 +21,8 @@ public class ProdutoService {
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
-	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	public List<Produto> findAll(){
 		return produtoRepository.findAll();
@@ -60,5 +66,28 @@ public class ProdutoService {
 			}	
 			return produtoDeletado;
 		}
+	
+	//DTO's
+	
+	//FindAll
+	public List<ProdutoDto> findAllDto() {
+		List<Produto> produtos = produtoRepository.findAll();
+		List<ProdutoDto> produtosDto = new ArrayList<>();
+		
+		for (Produto produto : produtos) {
+			
+			ProdutoDto produtoDtoAtual = modelMapper.map(produto, ProdutoDto.class);
+			produtosDto.add(produtoDtoAtual);
+			
+		}
+        return produtosDto;
+    	}
+	//FindById
+	
+	public ProdutoDto findByIdDto(Integer id) {
+		ProdutoDto produtoDto = modelMapper.map(produtoRepository.findById(id).orElse(null), ProdutoDto.class);
+		return produtoDto;
+	}
+	
 	
 }
