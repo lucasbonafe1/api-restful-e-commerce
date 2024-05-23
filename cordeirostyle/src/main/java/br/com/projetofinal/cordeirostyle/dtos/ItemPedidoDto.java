@@ -1,5 +1,7 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
+import java.util.List;
+
 public class ItemPedidoDto {
 
 	private Integer quantidade;
@@ -7,7 +9,7 @@ public class ItemPedidoDto {
 	private double percentual_desconto;
 	private double valor_bruto;
 	private double valor_liquido;
-	/*private ProdutoDto produtoDto;*/
+	private ProdutoDto produtoDto; // rever
 
 	public Integer getQuantidade() {
 		return quantidade;
@@ -49,18 +51,12 @@ public class ItemPedidoDto {
 		this.valor_liquido = valor_liquido;
 	}
 
-	/*public ProdutoDto getProdutoDto() {
+	public ProdutoDto getProdutoDto() {
 		return produtoDto;
 	}
 
 	public void setProdutoDto(ProdutoDto produtoDto) {
 		this.produtoDto = produtoDto;
 	}
-
-	@Override
-	public String toString() {
-		return "ItemPedidoDto [quantidade=" + quantidade + ", preco_venda=" + preco_venda + ", percentual_desconto="
-				+ percentual_desconto + ", valor_bruto=" + valor_bruto + ", valor_liquido=" + valor_liquido + "]";
-	}*/
 
 }

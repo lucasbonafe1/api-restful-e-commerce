@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.CategoriaDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
-import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
+import br.com.projetofinal.cordeirostyle.entities.Categoria;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.ProdutoRepository;
 
@@ -75,13 +75,15 @@ public class ProdutoService {
 		List<ProdutoDto> produtosDto = new ArrayList<>();
 		
 		for (Produto produto : produtos) {
-			
 			ProdutoDto produtoDtoAtual = modelMapper.map(produto, ProdutoDto.class);
+			Categoria categoria = produto.getCategoria();
+			CategoriaDto categoriaDto = modelMapper.map(categoria, CategoriaDto.class);
+			produtoDtoAtual.setCategoria(categoriaDto);
+
 			produtosDto.add(produtoDtoAtual);
-			
 		}
         return produtosDto;
-    	}
+    }
 	//FindById
 	
 	public ProdutoDto findByIdDto(Integer id) {

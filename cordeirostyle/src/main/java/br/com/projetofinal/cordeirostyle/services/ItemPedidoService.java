@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
+import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.ItemPedidoRepository;
 
 @Service
@@ -61,17 +63,32 @@ public class ItemPedidoService {
 	}
 	
 	public List<ItemPedidoDto> findAllDto() {
-		List<ItemPedido> itens = itemPedidoRepository.findAll();
-		List<ItemPedidoDto> itensDto = new ArrayList<>();
-		for (ItemPedido itemPedido : itens) {
-			ItemPedidoDto itemTransformado = modelMapper.map(itemPedido, ItemPedidoDto.class);
-			itensDto.add(itemTransformado);
+		    List<ItemPedido> itens = itemPedidoRepository.findAll();
+		    List<ItemPedidoDto> itensDto = new ArrayList<>();
+
+		    for (ItemPedido itemPedido : itens) {
+		        ItemPedidoDto itemTransformado = modelMapper.map(itemPedido, ItemPedidoDto.class);
+		        Produto produto = itemPedido.getProduto();
+		        
+		        if(produto != null) {
+		        	ProdutoDto produtoDto = modelMapper.map(produto, ProdutoDto.class);
+			        itemTransformado.setProdutoDto(produtoDto);
+		        }
+		        
+		        itensDto.add(itemTransformado);
+		    }
+
+		    return itensDto;
 		}
-        return itensDto;
-    }
 	
 	public ItemPedidoDto findByIdDto(Integer id) {
 		ItemPedidoDto itemDto = modelMapper.map(itemPedidoRepository.findById(id).orElse(null), ItemPedidoDto.class);
+		ItemPedido itemPedido = itemPedidoRepository.findById(id).orElse(null);
+		Produto produto = itemPedido.getProduto();
+		if(produto != null) {
+			ProdutoDto produtoDto = modelMapper.map(produto, ProdutoDto.class);
+			itemDto.setProdutoDto(produtoDto);
+		}
 		return itemDto;
 	}
 	

@@ -1,15 +1,12 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-import br.com.projetofinal.cordeirostyle.entities.Categoria;
-
 public class ProdutoDto {
 
 	private String nome;
 	private String descricao;
 	private double valor_unitario;
-	private Categoria categoria;
+	private CategoriaDto categoria;
 
-	
 	public String getNome() {
 		return nome;
 	}
@@ -34,11 +31,11 @@ public class ProdutoDto {
 		this.valor_unitario = valor_unitario;
 	}
 
-	public Integer getCategoria() {
-		return categoria.getId_categoria();
+	public CategoriaDto getCategoria() {
+		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(CategoriaDto categoria) {
 		this.categoria = categoria;
 	}
 	 
