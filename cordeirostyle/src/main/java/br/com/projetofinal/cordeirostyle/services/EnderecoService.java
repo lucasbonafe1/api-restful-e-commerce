@@ -1,12 +1,15 @@
 package br.com.projetofinal.cordeirostyle.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.repositories.EnderecoRepository;
 
@@ -15,6 +18,9 @@ public class EnderecoService {
 
 	@Autowired
 	EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	public List<Endereco> findAll(){
 		return enderecoRepository.findAll();
@@ -61,5 +67,22 @@ public class EnderecoService {
 			return enderecoDeletado;
 		}
 	
+	//FindAll
+		public List<EnderecoDto> findAllDto() {
+			List<Endereco> enderecos = enderecoRepository.findAll();
+			List<EnderecoDto> enderecosDto = new ArrayList<>();
+			
+			for (Endereco endereco : enderecos) {
+				EnderecoDto enderecosDtoAtual = modelMapper.map(endereco, EnderecoDto.class);
+				enderecosDto.add(enderecosDtoAtual);
+			}
+	        return enderecosDto;
+	    	}
+		//FindById
+		
+		public EnderecoDto findByIdDto(Integer id) {
+			EnderecoDto enderecoDto = modelMapper.map(enderecoRepository.findById(id).orElse(null), EnderecoDto.class);
+			return enderecoDto;
+		}
 	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.services.EnderecoService;
 
@@ -61,5 +62,20 @@ public class EnderecoController {
 		}
 		enderecoService.deleteById(id);
 		return new ResponseEntity<>(enderecoDeletado, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto")
+	public ResponseEntity<List<EnderecoDto>> findAllDto() {
+		return new ResponseEntity<>(enderecoService.findAllDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<EnderecoDto> findByIdDto(@PathVariable Integer id) {
+		EnderecoDto enderecoDtoEncontrado = enderecoService.findByIdDto(id);
+		if (enderecoDtoEncontrado == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(enderecoDtoEncontrado,HttpStatus.OK);
+		}
 	}
 }
