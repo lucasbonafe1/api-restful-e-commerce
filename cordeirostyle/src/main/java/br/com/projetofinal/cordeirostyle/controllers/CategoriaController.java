@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetofinal.cordeirostyle.dtos.CategoriaDto;
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.Categoria;
 import br.com.projetofinal.cordeirostyle.services.CategoriaService;
 
@@ -62,6 +64,22 @@ public class CategoriaController {
 			return new ResponseEntity<>(categoria, HttpStatus.NOT_FOUND);
 		} else {
 			return new ResponseEntity<>(categoriaService.deleteById(id), HttpStatus.OK);
+		}
+	}
+	
+//DTOs:
+	@GetMapping("/dto")
+	public ResponseEntity<List<CategoriaDto>> findAllDto() {
+		return new ResponseEntity<>(categoriaService.findAllDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<CategoriaDto> findByIdDto(@PathVariable Integer id) {
+		CategoriaDto categoriaEncontrada = categoriaService.findByIdDto(id);
+		if (categoriaEncontrada == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(categoriaEncontrada,HttpStatus.OK);
 		}
 	}
 
