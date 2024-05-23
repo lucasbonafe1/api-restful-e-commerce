@@ -2,12 +2,10 @@ package br.com.projetofinal.cordeirostyle.dtos;
 
 import java.util.List;
 
-import br.com.projetofinal.cordeirostyle.entities.Pedido;
-
 public class CategoriaDto {
 	private String nome;
 	private String descricao;
-	//private List<ProdutoDto> produtoDto;
+	private List<ProdutoDto> produtoDto;
 	
 	public String getNome() {
 		return nome;
@@ -22,12 +20,12 @@ public class CategoriaDto {
 		this.descricao = categoria;
 	}
 	
-//	public List<ProdutoDto> getProdutoDto() {
-//		return produtoDto;
-//	}
-//	public void setProdutoDto(List<ProdutoDto> produtoDto) {
-//		this.produtoDto = produtoDto;
-//	}
+	public List<ProdutoDto> getProdutoDto() {
+		return produtoDto;
+	}
+	public void setProdutoDto(List<ProdutoDto> produtoDto) {
+		this.produtoDto = produtoDto;
+	}
 	
 	
 	@Override

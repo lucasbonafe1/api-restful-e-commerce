@@ -1,19 +1,13 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-
 import br.com.projetofinal.cordeirostyle.entities.Categoria;
 
 public class ProdutoDto {
 
 	private String nome;
-	
 	private String descricao;
-	
 	private double valor_unitario;
-
-	/*private CategoriaDto categoriaDto;*/
+	private Categoria categoria;
 
 	
 	public String getNome() {
@@ -40,21 +34,18 @@ public class ProdutoDto {
 		this.valor_unitario = valor_unitario;
 	}
 
-
-	/*public CategoriaDto getCategoriaDto() {
-		return categoriaDto;
+	public Integer getCategoria() {
+		return categoria.getId_categoria();
 	}
 
-	public void setCategoriaDto(CategoriaDto categoriaDto) {
-		this.categoriaDto = categoriaDto;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
-	 */
+	 
 	@Override
 	public String toString() {
 		return "ProdutoDto [nome=" + nome + ", descricao=" + descricao + ", valor_unitario=" + valor_unitario
 				+ "]";
 	}
-
-	
 	
 }
