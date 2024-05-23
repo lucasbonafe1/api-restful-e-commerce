@@ -9,7 +9,7 @@ public class PedidoDto {
 	private LocalDate data_envio;
 	private Boolean status;
 	private Double valor_total;
-	private ClienteDto id_cliente;
+	private ClienteDto cliente;
 
 	public LocalDate getData_pedido() {
 		return data_pedido;
@@ -51,19 +51,19 @@ public class PedidoDto {
 		this.valor_total = valor_total;
 	}
 	
-	public ClienteDto getId_cliente() {
-		return id_cliente;
+	public ClienteDto getCliente() {
+		return cliente;
 	}
 
-	public void setId_cliente(ClienteDto id_cliente) {
-		this.id_cliente = id_cliente;
+	public void setCliente(ClienteDto cliente) {
+		this.cliente = cliente;
 	}
 	
 	@Override
 	public String toString() {
 		return "PedidoDto [ data_pedido=" + data_pedido + ", data_entrega=" + data_entrega
-				+ ", data_envio=" + data_envio + ", status=" + status + ", valor_total=" + valor_total + ", id_cliente="
-				+ id_cliente + "]";
+				+ ", data_envio=" + data_envio + ", status=" + status + ", valor_total=" + valor_total + ", cliente="
+				+ cliente + "]";
 	}	
 
 }

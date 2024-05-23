@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.Pedido;
 import br.com.projetofinal.cordeirostyle.services.PedidoService;
@@ -69,7 +68,7 @@ public class PedidoController {
 
 	@GetMapping("/dto")
 	public ResponseEntity<List<PedidoDto>> findAllPedidoResumido() {
-	return new ResponseEntity<>(pedidoService.findAllPedidoResumido(), HttpStatus.OK);
+	return new ResponseEntity<>(pedidoService.findAllDto(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/dto/{id}")

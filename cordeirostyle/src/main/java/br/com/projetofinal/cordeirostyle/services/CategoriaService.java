@@ -17,7 +17,7 @@ import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
 public class CategoriaService {
 	@Autowired
 	CategoriaRepository categoriaRepository;
-	
+
 	@Autowired
 	ModelMapper modelMapper;
 
@@ -35,7 +35,7 @@ public class CategoriaService {
 
 	public Categoria update(Integer id, Categoria novaCategoria) {
 		Categoria categoriaAtualizada = categoriaRepository.findById(id).orElse(null);
-		if(categoriaAtualizada != null) {
+		if (categoriaAtualizada != null) {
 			try {
 				categoriaAtualizada.setNome(novaCategoria.getNome());
 				categoriaAtualizada.setDescricao(novaCategoria.getDescricao());
@@ -60,29 +60,42 @@ public class CategoriaService {
 		}
 		return categoriaDeletada;
 	}
-	
+
 //DTOs:
 	public List<CategoriaDto> findAllDto() {
 		List<Categoria> categorias = categoriaRepository.findAll();
 		List<CategoriaDto> categoriasDto = new ArrayList<>();
-		List<Produto> produtos = new ArrayList<>();
-		List<ProdutoDto> produtosDto = new ArrayList<>();
-		
+
 		for (Categoria categoria : categorias) {
 			CategoriaDto categoriaTransformada = modelMapper.map(categoria, CategoriaDto.class);
-			produtos = categoria.getProduto();
+			List<Produto> produtos = categoria.getProduto();
+			List<ProdutoDto> produtosDto = new ArrayList<>();
 			for (Produto produto : produtos) {
 				produtosDto.add(modelMapper.map(produto, ProdutoDto.class));
 			}
 			categoriaTransformada.setProdutoDto(produtosDto);
 			categoriasDto.add(categoriaTransformada);
 		}
-        return categoriasDto;
-    }
-	
+		return categoriasDto;
+	}
+
 	public CategoriaDto findByIdDto(Integer id) {
-		CategoriaDto categoriaDto = modelMapper.map(categoriaRepository.findById(id).orElse(null), CategoriaDto.class);
+		Categoria categoria = categoriaRepository.findById(id).orElse(null);
+		CategoriaDto categoriaDto = new CategoriaDto();
+		List<ProdutoDto> produtosDto = new ArrayList<>();
+		
+		if(categoria != null) {
+			categoriaDto = modelMapper.map(categoria, CategoriaDto.class);
+			List<Produto> produtos = categoria.getProduto();
+			
+			if(produtos != null) {
+				for (Produto produto : produtos) {
+					produtosDto.add(modelMapper.map(produto, ProdutoDto.class));
+				}
+			}
+		}
+		categoriaDto.setProdutoDto(produtosDto);
 		return categoriaDto;
 	}
-	
+
 }

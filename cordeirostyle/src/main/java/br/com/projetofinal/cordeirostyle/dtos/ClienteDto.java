@@ -35,8 +35,8 @@ public class ClienteDto {
 	public void setData_nascimento(String data_nascimento) {
 		this.data_nascimento = data_nascimento;
 	}
-	public EnderecoDto getEnderecoDto() {
-		return endereco;
+	public String getEnderecoDto() {
+		return endereco.getCep();
 	}
 	public void setEnderecoDto(EnderecoDto endereco) {
 		this.endereco = endereco;

@@ -1,5 +1,8 @@
 package br.com.projetofinal.cordeirostyle.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +14,11 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "item_pedido")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id_endereco",
+        scope = Endereco.class
+)
 public class ItemPedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
