@@ -96,5 +96,7 @@ public class EnderecoService {
 			EnderecoDto enderecoDto = modelMapper.map(enderecoRepository.findById(id).orElse(null), EnderecoDto.class);
 			return enderecoDto;
 		}
+		
+		
 	
 }

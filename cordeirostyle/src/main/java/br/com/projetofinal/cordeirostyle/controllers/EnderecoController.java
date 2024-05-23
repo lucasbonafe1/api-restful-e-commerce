@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetofinal.cordeirostyle.dtos.CepDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
+import br.com.projetofinal.cordeirostyle.services.CepRestService;
 import br.com.projetofinal.cordeirostyle.services.EnderecoService;
 
 @RestController
@@ -24,6 +26,9 @@ public class EnderecoController {
 
 	@Autowired
 	EnderecoService enderecoService;
+	
+	@Autowired
+	CepRestService cepRestService;
 	
 	@GetMapping
 	public ResponseEntity<List<Endereco>> findAll() {
@@ -78,4 +83,15 @@ public class EnderecoController {
 			return new ResponseEntity<>(enderecoDtoEncontrado,HttpStatus.OK);
 		}
 	}
+	
+	
+//Cep da ViaCep (Api externa):
+	
+	@GetMapping("/via-cep/{cep}")
+	public ResponseEntity<CepDto> findUserByIdFromViaCep(@PathVariable String cep) {
+		return new ResponseEntity<>(cepRestService.findUserByCepFromViaCep(cep), HttpStatus.OK);
+		
+	}
+	
+	
 }
