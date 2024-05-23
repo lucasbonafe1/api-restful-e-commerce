@@ -1,13 +1,14 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
+
+
 public class ClienteDto {
 
 	private String email;
 	private String nome_completo;
-	private String cpf;
 	private String telefone;
 	private String data_nascimento;
-	/*private Endereco endereco;*/
+	private EnderecoDto endereco;
 	
 	public String getEmail() {
 		return email;
@@ -21,12 +22,7 @@ public class ClienteDto {
 	public void setNome_completo(String nome_completo) {
 		this.nome_completo = nome_completo;
 	}
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+	
 	public String getTelefone() {
 		return telefone;
 	}
@@ -39,12 +35,12 @@ public class ClienteDto {
 	public void setData_nascimento(String data_nascimento) {
 		this.data_nascimento = data_nascimento;
 	}
-	/*public Endereco getEndereco() {
+	public EnderecoDto getEnderecoDto() {
 		return endereco;
 	}
-	public void setEndereco(Endereco endereco) {
+	public void setEnderecoDto(EnderecoDto endereco) {
 		this.endereco = endereco;
-	}*/
+	}
 	
 	
 	

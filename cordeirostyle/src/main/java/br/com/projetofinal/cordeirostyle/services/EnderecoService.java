@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
+import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.repositories.EnderecoRepository;
 
@@ -74,8 +76,18 @@ public class EnderecoService {
 			
 			for (Endereco endereco : enderecos) {
 				EnderecoDto enderecosDtoAtual = modelMapper.map(endereco, EnderecoDto.class);
+				
+				ClienteDto clienteDto;
+				Cliente cliente;
+				
+				cliente = endereco.getCliente();
+				if (cliente != null) {
+					 clienteDto = modelMapper.map(cliente, ClienteDto.class); 
+					enderecosDtoAtual.setCliente(clienteDto);
+					
+				}
 				enderecosDto.add(enderecosDtoAtual);
-			}
+			} 
 	        return enderecosDto;
 	    	}
 		//FindById
