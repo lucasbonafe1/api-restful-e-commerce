@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.services.ClienteService;
 
@@ -65,4 +67,19 @@ public class ClienteController {
 		}
 	}
 
+	@GetMapping("/dto")
+	public ResponseEntity<List<ClienteDto>> findAllDto() {
+		return new ResponseEntity<>(clienteService.findAllDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<ClienteDto> findByIdDto(@PathVariable Integer id) {
+		ClienteDto clienteDto = clienteService.findByIdDto(id);
+		if (clienteDto == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(clienteDto,HttpStatus.OK);
+		}
+	}
+	
 }

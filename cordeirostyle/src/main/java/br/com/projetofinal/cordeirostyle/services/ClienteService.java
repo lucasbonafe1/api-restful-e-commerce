@@ -1,12 +1,16 @@
 package br.com.projetofinal.cordeirostyle.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.projetofinal.cordeirostyle.entities.Categoria;
+import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
+import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.repositories.ClienteRepository;
 
 @Service
@@ -14,6 +18,9 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository clienteRepository;
 
+	@Autowired
+	ModelMapper modelMapper;
+	
 	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
 	}
@@ -55,6 +62,21 @@ public class ClienteService {
 
 		}
 		return clienteDeletada;
+	}
+
+	public List<ClienteDto> findAllDto() {
+		List<Cliente> clientes = clienteRepository.findAll();
+		List<ClienteDto> clientesDto = new ArrayList<>();
+		for (Cliente cliente : clientes) {
+			ClienteDto clienteTransformado = modelMapper.map(cliente, ClienteDto.class);
+			clientesDto.add(clienteTransformado);
+		}
+        return clientesDto;
+    }
+	
+	public ClienteDto findByIdDto(Integer id) {
+		ClienteDto clienteDto = modelMapper.map(clienteRepository.findById(id).orElse(null), ClienteDto.class);
+		return clienteDto;
 	}
 	
 }
