@@ -7,16 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.projetofinal.cordeirostyle.dtos.CategoriaDto;
 import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
-import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
-import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
-import br.com.projetofinal.cordeirostyle.entities.Categoria;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
-import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
-import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.ClienteRepository;
 
 @Service

@@ -8,6 +8,7 @@ public class CepDto {
 	private String bairro;
 	private String localidade;
 	private String uf;
+	private Integer numero;
 	
 	
 	public String getCep() {
@@ -46,6 +47,11 @@ public class CepDto {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
+	public Integer getNumero() {
+		return numero;
+	}
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
 	
-
 }

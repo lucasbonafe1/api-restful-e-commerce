@@ -45,8 +45,8 @@ public class EnderecoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Endereco> save(@RequestBody Endereco endereco) {
-		return new ResponseEntity<>(enderecoService.save(endereco), HttpStatus.CREATED) ;
+	public ResponseEntity<Endereco> save(@RequestBody CepDto cep) {
+		return new ResponseEntity<>(enderecoService.save(cep), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
@@ -87,7 +87,7 @@ public class EnderecoController {
 	
 //Cep da ViaCep (Api externa):
 	
-	@GetMapping("/via-cep/{cep}")
+	@GetMapping("/cep/{cep}")
 	public ResponseEntity<CepDto> findUserByIdFromViaCep(@PathVariable String cep) {
 		return new ResponseEntity<>(cepRestService.findUserByCepFromViaCep(cep), HttpStatus.OK);
 		

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.projetofinal.cordeirostyle.dtos.CepDto;
 import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
@@ -24,6 +25,9 @@ public class EnderecoService {
 	@Autowired
 	ModelMapper modelMapper;
 	
+	@Autowired
+	CepRestService cepRestService;
+	
 	public List<Endereco> findAll(){
 		return enderecoRepository.findAll();
 	}
@@ -32,9 +36,21 @@ public class EnderecoService {
 		return enderecoRepository.findById(id).orElse(null);
 	}
 	
-	public Endereco save(@RequestBody Endereco endereco){
+	public Endereco save(@RequestBody CepDto cep){
+		CepDto enderecoConsultado = cepRestService.findUserByCepFromViaCep(cep.getCep());
+		Endereco endereco = new Endereco();
+		
+		endereco.setCep(enderecoConsultado.getCep());
+		endereco.setRua(enderecoConsultado.getLogradouro());
+		endereco.setBairro(enderecoConsultado.getBairro());
+		endereco.setCidade(enderecoConsultado.getLocalidade());
+		endereco.setNumero(cep.getNumero());
+		endereco.setComplemento(cep.getComplemento());
+		endereco.setUf(enderecoConsultado.getUf());
+		
 		return enderecoRepository.save(endereco);
 	}
+	
 	public Endereco update(@PathVariable Integer id, @RequestBody Endereco enderecoNovo){
 		Endereco endereco = enderecoRepository.findById(id).orElse(null);
 		if (endereco != null) {

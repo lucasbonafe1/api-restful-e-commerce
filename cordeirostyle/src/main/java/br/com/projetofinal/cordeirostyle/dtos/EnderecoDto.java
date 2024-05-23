@@ -1,10 +1,5 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-
-
 public class EnderecoDto {
 
 	private String cep;
@@ -45,7 +40,11 @@ public class EnderecoDto {
 		this.uf = uf;
 	}
 	public String getCliente() {
+		if(cliente != null) {
 		return cliente.getNome_completo();
+		} else {
+			return null;
+		}
 	}
 	public void setCliente(ClienteDto cliente) {
 		this.cliente = cliente;

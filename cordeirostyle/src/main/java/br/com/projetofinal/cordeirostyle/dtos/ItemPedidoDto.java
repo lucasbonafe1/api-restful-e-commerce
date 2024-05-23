@@ -1,7 +1,5 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-import java.util.List;
-
 public class ItemPedidoDto {
 
 	private Integer quantidade;
