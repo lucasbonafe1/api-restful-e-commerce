@@ -118,9 +118,9 @@ public class Pedido {
 	public double calcValorTotal() {
 		double valorTotal = 0;
 		try {
-		for (ItemPedido itemPedido : itensPedidos) {
-			valorTotal += itemPedido.getValor_liquido();
-		}
+			for (ItemPedido itemPedido : itensPedidos) {
+				valorTotal += itemPedido.getValor_liquido();
+			}
 		} catch(Exception e) {
 			System.out.println(e);
 		}
