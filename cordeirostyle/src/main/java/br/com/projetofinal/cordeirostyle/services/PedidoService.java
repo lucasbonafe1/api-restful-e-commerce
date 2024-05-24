@@ -2,16 +2,13 @@ package br.com.projetofinal.cordeirostyle.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
-import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
-import br.com.projetofinal.cordeirostyle.entities.Cliente;
-import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.entities.Pedido;
 import br.com.projetofinal.cordeirostyle.repositories.PedidoRepository;
 
@@ -23,82 +20,64 @@ public class PedidoService {
 	@Autowired
 	ModelMapper modelMapper;
 
-	public List<Pedido> findAll() {
-		return pedidoRepository.findAll();
+	public List<PedidoDto> findAll() throws NoSuchElementException {
+	    List<Pedido> pedidos = pedidoRepository.findAll();
+	    List<PedidoDto> pedidoDtoList = new ArrayList<>();
+
+	    if (pedidos.isEmpty()) {
+	        throw new NoSuchElementException("Não há pedidos registrados!");
+	    }
+
+	    for (Pedido pedido : pedidos) { 
+	        PedidoDto pedidoTransformado = modelMapper.map(pedido, PedidoDto.class);
+
+	        pedidoDtoList.add(pedidoTransformado);
+	    }
+	    return pedidoDtoList;
 	}
 
-	public Pedido findById(Integer id) {
-		return pedidoRepository.findById(id).orElse(null);
+
+	public PedidoDto findById(Integer id) {
+		Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
+		PedidoDto pedidoDto = modelMapper.map(pedido, PedidoDto.class);
+		
+		return pedidoDto;
 	}
 
-	public Pedido save(Pedido pedido) {
-		return pedidoRepository.save(pedido);
+	public PedidoDto save(PedidoDto pedidoDto) {
+	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
+	    Pedido pedidoSalvo = pedidoRepository.save(pedido);
+	    PedidoDto pedidoSalvoDto = modelMapper.map(pedidoSalvo, PedidoDto.class);
+	 
+	    return pedidoSalvoDto;
 	}
 
-	public Pedido update(Integer id, Pedido pedido) {
+	public PedidoDto update(Integer id, PedidoDto pedido) {
 		Pedido pedidoAtualizado = pedidoRepository.findById(id).orElse(null);
+		PedidoDto pedidoDtoAtualizado = null;
 		if (pedidoAtualizado != null) {
 			try {
 				pedidoAtualizado.setData_entrega(pedido.getData_entrega());
 				pedidoAtualizado.setData_envio(pedido.getData_envio());
 				pedidoAtualizado.setStatus(pedido.getStatus());
 				pedidoAtualizado.setValor_total(pedido.getValor_total());
+				pedidoDtoAtualizado = modelMapper.map(pedidoAtualizado, PedidoDto.class);
 				pedidoRepository.save(pedidoAtualizado);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 		}
-		return pedidoAtualizado;
+		return pedidoDtoAtualizado;
 	}
 
-	public Pedido deleteById(Integer id) {
+	public PedidoDto deleteById(Integer id) {
 		Pedido pedidoDeletado = pedidoRepository.findById(id).orElse(null);
+		PedidoDto pedidoDtoDeletado = null;
 		if (pedidoDeletado != null) {
-			try {
-				pedidoRepository.deleteById(id);
-				return pedidoDeletado;
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-
+			pedidoDtoDeletado = modelMapper.map(pedidoDeletado, PedidoDto.class);
+			pedidoRepository.deleteById(id);
 		}
-		return pedidoDeletado;
+		return pedidoDtoDeletado;
 	}
 	
-	public List<PedidoDto> findAllDto() {
-		List<Pedido> pedidos = pedidoRepository.findAll();
-		List<PedidoDto> pedidoDto = new ArrayList<>();
-		for (Pedido pedido : pedidos) {
-			PedidoDto pedidoTransformado = modelMapper.map(pedido, PedidoDto.class);
-			
-			Cliente cliente = pedido.getCliente();
-			Endereco endereco = cliente.getEndereco();
-			
-			ClienteDto clienteDto = modelMapper.map(cliente, ClienteDto.class);
-			EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
-			
-			//clienteDto.setEnderecoDto(enderecoDto);
-			pedidoTransformado.setCliente(clienteDto);
-			
-			pedidoDto.add(pedidoTransformado);
-		}
-        return pedidoDto;
-    }
-	
-	public PedidoDto findByIdDto(Integer id) {
-		Pedido pedido = pedidoRepository.findById(id).orElse(null);
-		PedidoDto pedidoDto = modelMapper.map(pedido, PedidoDto.class);
-		
-		Cliente cliente = pedido.getCliente();
-		Endereco endereco = cliente.getEndereco();
-		
-		ClienteDto clienteDto = modelMapper.map(cliente, ClienteDto.class);
-		EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
-		
-		//clienteDto.setEnderecoDto(enderecoDto);
-		pedidoDto.setCliente(clienteDto);
-		
-		return pedidoDto;
-	}
-
 }

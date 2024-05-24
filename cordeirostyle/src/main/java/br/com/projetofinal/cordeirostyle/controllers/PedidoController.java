@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
-import br.com.projetofinal.cordeirostyle.entities.Pedido;
 import br.com.projetofinal.cordeirostyle.services.PedidoService;
 
 
@@ -27,13 +26,13 @@ public class PedidoController {
 	PedidoService pedidoService;
 	
 	@GetMapping
-	public ResponseEntity<List<Pedido>> findAll() {
+	public ResponseEntity<List<PedidoDto>> findAll() {
 		return new ResponseEntity<>(pedidoService.findAll(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Pedido> findById(@PathVariable Integer id){
-		Pedido pedidoEncontrado = pedidoService.findById(id);
+	public ResponseEntity<PedidoDto> findById(@PathVariable Integer id){
+		PedidoDto pedidoEncontrado = pedidoService.findById(id);
 		if (pedidoEncontrado == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -41,13 +40,13 @@ public class PedidoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
+	public ResponseEntity<PedidoDto> save(@RequestBody PedidoDto pedido) {
 		return new ResponseEntity<>(pedidoService.save(pedido), HttpStatus.CREATED) ;
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Pedido>update(@PathVariable Integer id,@RequestBody Pedido pedidoNovo){
-		Pedido pedidoUpdate = pedidoService.update(id,pedidoNovo);
+	public ResponseEntity<PedidoDto>update(@PathVariable Integer id,@RequestBody PedidoDto pedidoNovo){
+		PedidoDto pedidoUpdate = pedidoService.update(id,pedidoNovo);
 		if(pedidoUpdate != null) {
 			 return new ResponseEntity<>(pedidoUpdate, HttpStatus.OK);
 		}
@@ -55,30 +54,14 @@ public class PedidoController {
     }
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Pedido> deleteById(@PathVariable Integer id) {
-		Pedido pedidoDeletado = pedidoService.findById(id);
+	public ResponseEntity<PedidoDto> deleteById(@PathVariable Integer id) {
+		PedidoDto pedidoDeletado = pedidoService.findById(id);
 
 		if (pedidoDeletado == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		pedidoService.deleteById(id);
 		return new ResponseEntity<>(pedidoDeletado, HttpStatus.OK);
-	}
-	
-
-	@GetMapping("/dto")
-	public ResponseEntity<List<PedidoDto>> findAllPedidoResumido() {
-	return new ResponseEntity<>(pedidoService.findAllDto(), HttpStatus.OK);
-	}
-	
-	@GetMapping("/dto/{id}")
-	public ResponseEntity<PedidoDto> findByIdDto(@PathVariable Integer id) {
-		PedidoDto pedidoEncontrado = pedidoService.findByIdDto(id);
-		if (pedidoEncontrado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(pedidoEncontrado,HttpStatus.OK);
-		}
 	}
 	
 }
