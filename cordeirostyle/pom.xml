@@ -48,10 +48,6 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-<<<<<<< Updated upstream
-		
-=======
->>>>>>> Stashed changes
 		<!--
 		https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
 		<dependency>
@@ -66,12 +62,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
