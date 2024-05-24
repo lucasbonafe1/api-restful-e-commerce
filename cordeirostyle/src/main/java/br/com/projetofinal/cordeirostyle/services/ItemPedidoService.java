@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.aspectj.lang.reflect.NoSuchAdviceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.projetofinal.cordeirostyle.dtos.CategoriaDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
-import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
-import br.com.projetofinal.cordeirostyle.entities.Produto;
-import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
 import br.com.projetofinal.cordeirostyle.repositories.ItemPedidoRepository;
 
 @Service
@@ -35,6 +31,9 @@ public class ItemPedidoService {
 		}
 		for (ItemPedido item : items) {
 			ItemPedidoDto itemTransformado = modelMapper.map(item, ItemPedidoDto.class);
+			ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
+			itemTransformado.setProdutoDto(produtoDtoRetorno);
+			
 	        itemsDto.add(itemTransformado);
 		}
 		return itemsDto;
@@ -46,6 +45,8 @@ public class ItemPedidoService {
 		ItemPedidoDto itemPedidoDto = null;
 		if (item != null) {
 			itemPedidoDto = modelMapper.map(item, ItemPedidoDto.class);
+			ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
+			itemPedidoDto.setProdutoDto(produtoDtoRetorno);
 		}
 		return itemPedidoDto;
 	}
@@ -55,7 +56,6 @@ public class ItemPedidoService {
 		ItemPedido itemSalvo = itemPedidoRepository.save(item);
 		ItemPedidoDtoRetorno itemRetorno = modelMapper.map(itemSalvo, ItemPedidoDtoRetorno.class);
 		return itemRetorno;
-
 	}
 
 	public ItemPedidoDtoRetorno update(Integer id, ItemPedidoDto novoItemPedidoDto) {

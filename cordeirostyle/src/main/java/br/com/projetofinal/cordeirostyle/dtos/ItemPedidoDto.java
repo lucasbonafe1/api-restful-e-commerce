@@ -8,7 +8,7 @@ public class ItemPedidoDto {
 	private double percentual_desconto;
 	private double valor_bruto;
 	private double valor_liquido;
-	private ProdutoDto produtoDto; // rever
+	private ProdutoDtoRetorno produto;
 
 	public Integer getQuantidade() {
 		return quantidade;
@@ -50,12 +50,12 @@ public class ItemPedidoDto {
 		this.valor_liquido = valor_liquido;
 	}
 
-	public ProdutoDto getProdutoDto() {
-		return produtoDto;
+	public ProdutoDtoRetorno getProduto() {
+		return produto;
 	}
 
-	public void setProdutoDto(ProdutoDto produtoDto) {
-		this.produtoDto = produtoDto;
+	public void setProdutoDto(ProdutoDtoRetorno produtoDto) {
+		this.produto = produtoDto;
 	}
 
 	public Integer getId_item_pedido() {

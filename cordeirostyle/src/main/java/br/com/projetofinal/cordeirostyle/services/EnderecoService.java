@@ -73,14 +73,15 @@ public class EnderecoService {
 		Endereco endereco = enderecoRepository.findById(id).orElseThrow(
 				() -> new NoSuchElementException("Endereco com id correspondente não encontrado!"));
 		EnderecoDtoRetorno enderecoDtoRetorno = null;
+		CepDto enderecoConsultado = cepRestService.findUserByCepFromViaCep(enderecoNovo.getCep());
 		if (endereco != null) {
-			endereco.setCep(enderecoNovo.getCep());
-			endereco.setRua(enderecoNovo.getRua());
-			endereco.setBairro(enderecoNovo.getBairro());
-			endereco.setCidade(enderecoNovo.getCidade());
+			endereco.setCep(enderecoConsultado.getCep());
+			endereco.setRua(enderecoConsultado.getLogradouro());
+			endereco.setBairro(enderecoConsultado.getBairro());
+			endereco.setCidade(enderecoConsultado.getLocalidade());
 			endereco.setNumero(enderecoNovo.getNumero());
 			endereco.setComplemento(enderecoNovo.getComplemento());
-			endereco.setUf(enderecoNovo.getUf());
+			endereco.setUf(enderecoConsultado.getUf());
 			
 			enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
 

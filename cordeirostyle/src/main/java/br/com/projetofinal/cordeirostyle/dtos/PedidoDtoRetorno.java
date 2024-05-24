@@ -2,15 +2,13 @@ package br.com.projetofinal.cordeirostyle.dtos;
 
 import java.time.LocalDate;
 
-public class PedidoDto {
+public class PedidoDtoRetorno {
 
 	private LocalDate data_pedido;
 	private LocalDate data_entrega;
 	private LocalDate data_envio;
 	private Boolean status;
 	private Double valor_total;
-	private ClienteDto cliente;
-	private ItemPedidoDto itens;
 
 	public LocalDate getData_pedido() {
 		return data_pedido;
@@ -51,28 +49,11 @@ public class PedidoDto {
 	public void setValor_total(Double valor_total) {
 		this.valor_total = valor_total;
 	}
-	
-	public ClienteDto getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(ClienteDto cliente) {
-		this.cliente = cliente;
-	}	
-	
-	public ItemPedidoDto getItens() {
-		return itens;
-	}
-
-	public void setItens(ItemPedidoDto itens) {
-		this.itens = itens;
-	}
 
 	@Override
 	public String toString() {
 		return "PedidoDto [ data_pedido=" + data_pedido + ", data_entrega=" + data_entrega
-				+ ", data_envio=" + data_envio + ", status=" + status + ", valor_total=" + valor_total + ", cliente="
-				+ cliente + "]";
+				+ ", data_envio=" + data_envio + ", status=" + status + ", valor_total=" + valor_total + "]";
 	}	
 
 }
