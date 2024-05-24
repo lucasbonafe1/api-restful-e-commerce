@@ -77,7 +77,7 @@ public class PedidoService {
 			ClienteDto clienteDto = modelMapper.map(cliente, ClienteDto.class);
 			EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
 			
-			clienteDto.setEnderecoDto(enderecoDto);
+			//clienteDto.setEnderecoDto(enderecoDto);
 			pedidoTransformado.setCliente(clienteDto);
 			
 			pedidoDto.add(pedidoTransformado);
@@ -95,7 +95,7 @@ public class PedidoService {
 		ClienteDto clienteDto = modelMapper.map(cliente, ClienteDto.class);
 		EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
 		
-		clienteDto.setEnderecoDto(enderecoDto);
+		//clienteDto.setEnderecoDto(enderecoDto);
 		pedidoDto.setCliente(clienteDto);
 		
 		return pedidoDto;

@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
-import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
-import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.services.ClienteService;
 
 @RestController
@@ -26,60 +24,28 @@ public class ClienteController {
 	ClienteService clienteService;
 	
 	@GetMapping
-	public ResponseEntity<List<Cliente>> findAll(){
+	public ResponseEntity<List<ClienteDto>> findAll(){
 		return new ResponseEntity<>(clienteService.findAll(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> findById(@PathVariable Integer id){
-		Cliente cliente = clienteService.findById(id);
-		
-		if(cliente == null) {
-			return new ResponseEntity<>(cliente, HttpStatus.NOT_FOUND);
-		}else {
-			return new ResponseEntity<>(cliente, HttpStatus.OK);
-		}
-		
+	public ResponseEntity<ClienteDto> findById(@PathVariable Integer id){
+			return new ResponseEntity<>(clienteService.findById(id), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-		return new ResponseEntity<>(clienteService.save(cliente),HttpStatus.CREATED);
+	public ResponseEntity<ClienteDto> save(@RequestBody ClienteDto clienteDto) {
+		return new ResponseEntity<>(clienteService.save(clienteDto),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente>update(@PathVariable Integer id, @RequestBody Cliente novoCliente) {
-		Cliente clienteUpdate = clienteService.findById(id);
-		if(clienteUpdate != null) {
-			return new ResponseEntity<>(clienteService.update(id, novoCliente), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>(clienteUpdate, HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<ClienteDto>update(@PathVariable Integer id, @RequestBody ClienteDto novoClienteDto) {
+			return new ResponseEntity<>(clienteService.update(id, novoClienteDto), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Cliente> deleteById(@PathVariable Integer id){
-		Cliente cliente = clienteService.findById(id);
-		if(cliente == null) {
-			return new ResponseEntity<>(cliente, HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(clienteService.deleteById(id), HttpStatus.OK);
-		}
-	}
-
-	@GetMapping("/dto")
-	public ResponseEntity<List<ClienteDto>> findAllDto() {
-		return new ResponseEntity<>(clienteService.findAllDto(), HttpStatus.OK);
-	}
-	
-	@GetMapping("/dto/{id}")
-	public ResponseEntity<ClienteDto> findByIdDto(@PathVariable Integer id) {
-		ClienteDto clienteDto = clienteService.findByIdDto(id);
-		if (clienteDto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(clienteDto,HttpStatus.OK);
-		}
+	public ResponseEntity<ClienteDto> deleteById(@PathVariable Integer id){
+		return new ResponseEntity<>(clienteService.deleteById(id), HttpStatus.OK);
 	}
 	
 }

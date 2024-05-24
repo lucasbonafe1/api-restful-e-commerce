@@ -2,13 +2,14 @@ package br.com.projetofinal.cordeirostyle.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
-import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.repositories.ClienteRepository;
@@ -19,81 +20,90 @@ public class ClienteService {
 	ClienteRepository clienteRepository;
 
 	@Autowired
+	EnderecoService enderecoService;
+
+	@Autowired
 	ModelMapper modelMapper;
-	
-	public List<Cliente> findAll() {
-		return clienteRepository.findAll();
-	}
 
-	public Cliente findById(Integer id) {
-		return clienteRepository.findById(id).orElse(null);
-	}
-
-	public Cliente save(Cliente cliente) {
-		return clienteRepository.save(cliente);
-	}
-
-	public Cliente update(Integer id, Cliente novocliente) {
-		Cliente clienteAtualizada = clienteRepository.findById(id).orElse(null);
-		if(clienteAtualizada != null) {
-			try {
-				clienteAtualizada.setNome_completo(novocliente.getNome_completo());
-				clienteAtualizada.setEmail(novocliente.getEmail());
-				clienteAtualizada.setCpf(novocliente.getCpf());
-				clienteAtualizada.setTelefone(novocliente.getTelefone());
-				clienteAtualizada.setData_nascimento(novocliente.getData_nascimento());
-				clienteRepository.save(clienteAtualizada);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		}
-		return clienteAtualizada;
-	}
-
-	public Cliente deleteById(Integer id) {
-		Cliente clienteDeletada = clienteRepository.findById(id).orElse(null);
-		if (clienteDeletada != null) {
-			try {
-				clienteRepository.deleteById(id);
-				return clienteDeletada;
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-
-		}
-		return clienteDeletada;
-	}
-	
-	public List<ClienteDto> findAllDto() {
+	public List<ClienteDto> findAll() throws NoSuchElementException {
 		List<Cliente> clientes = clienteRepository.findAll();
-		List<ClienteDto> clienteDto = new ArrayList<>();
-		Endereco endereco;
-		EnderecoDto enderecoDto;
-		
+		List<ClienteDto> clientesDto = new ArrayList<>();
+
+		if (clientes.isEmpty()) {
+			throw new NoSuchElementException("Não há clientes registrados!");
+		}
+
 		for (Cliente cliente : clientes) {
-			ClienteDto clienteTranformado = modelMapper.map(cliente, ClienteDto.class);
-			
-			endereco = cliente.getEndereco();
-			if (endereco!= null) {
-				enderecoDto = modelMapper.map(endereco,EnderecoDto.class);
-				clienteTranformado.setEnderecoDto(enderecoDto);				
+			ClienteDto clienteDto = modelMapper.map(cliente, ClienteDto.class);
+			Endereco endereco = cliente.getEndereco();
+			EnderecoDtoRetorno enderecoDtoRetorno = null;
+			if (endereco != null) {
+				enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
 			}
-			clienteDto.add(clienteTranformado);			
+
+			clienteDto.setEnderecoDto(enderecoDtoRetorno);
+			clientesDto.add(clienteDto);
 		}
-        return clienteDto;
-    }
-	
-	
-	public ClienteDto findByIdDto(Integer id) {
-		Cliente clienteEncontrado = clienteRepository.findById(id).orElse(null);
-		ClienteDto clienteDto = modelMapper.map(clienteEncontrado, ClienteDto.class);
-		
-		Endereco endereco = clienteEncontrado.getEndereco();
-		if (endereco!= null) {
-			EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
-			clienteDto.setEnderecoDto(enderecoDto);
+
+		return clientesDto;
+	}
+
+	public ClienteDto findById(Integer id) {
+		Cliente cliente = clienteRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Cliente com id correspondente não encontrado!"));
+		ClienteDto clienteDto = null;
+
+		if (cliente.getEndereco() != null) {
+			Endereco endereco = cliente.getEndereco();
+			EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
+			clienteDto = modelMapper.map(cliente, ClienteDto.class);
+			clienteDto.setEnderecoDto(enderecoDtoRetorno);
 		}
+
 		return clienteDto;
 	}
-	
+
+	public ClienteDto save(ClienteDto clienteDto) {
+		Cliente cliente = modelMapper.map(clienteDto, Cliente.class);
+		Cliente clienteSalvo = clienteRepository.save(cliente);
+		ClienteDto clienteSalvoDto = modelMapper.map(clienteSalvo, ClienteDto.class);
+
+		Endereco endereco = enderecoService.findById(clienteDto.getEndereco().getId_endereco());
+		EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
+		clienteSalvoDto.setEnderecoDto(enderecoDtoRetorno);
+
+		return clienteSalvoDto;
+	}
+
+	public ClienteDto update(Integer id, ClienteDto novoclienteDto) {
+		Cliente clienteAtualizado = clienteRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Cliente com id correspondente não encontrado!"));
+		ClienteDto clienteDtoAtualizado = null;
+		if (clienteAtualizado != null) {
+			Endereco endereco = enderecoService.findById(novoclienteDto.getEndereco().getId_endereco());
+			EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
+
+			clienteAtualizado.setNome_completo(novoclienteDto.getNome_completo());
+			clienteAtualizado.setEmail(novoclienteDto.getEmail());
+			clienteAtualizado.setTelefone(novoclienteDto.getTelefone());
+			clienteAtualizado.setData_nascimento(novoclienteDto.getData_nascimento());
+			clienteAtualizado.setEndereco(endereco);
+
+			clienteDtoAtualizado = modelMapper.map(clienteAtualizado, ClienteDto.class);
+			clienteDtoAtualizado.setEnderecoDto(enderecoDtoRetorno);
+
+			clienteRepository.save(clienteAtualizado);
+		}
+		return clienteDtoAtualizado;
+	}
+
+	public ClienteDto deleteById(Integer id) {
+		Cliente clienteDeletado = clienteRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Cliente com id correspondente não encontrado!"));
+		ClienteDto clienteDtoDeletado = null;
+		if (clienteDeletado != null) {
+			clienteDtoDeletado = modelMapper.map(clienteDeletado, ClienteDto.class);
+			clienteRepository.deleteById(id);
+		}
+		return clienteDtoDeletado;
+	}
 }
