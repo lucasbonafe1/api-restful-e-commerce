@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
+import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
 import br.com.projetofinal.cordeirostyle.repositories.ProdutoRepository;
 
 @Service
@@ -20,6 +21,9 @@ public class ProdutoService {
 
 	@Autowired
 	ProdutoRepository produtoRepository;
+	
+	@Autowired
+	CategoriaRepository categoriaRepository;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -57,15 +61,17 @@ public class ProdutoService {
 		return produtoRetorno;
 	}
 	
-	public ProdutoDtoRetorno update(@PathVariable Integer id, @RequestBody ProdutoDto produtoNovoDto){
+	public ProdutoDto update(@PathVariable Integer id, @RequestBody ProdutoDto produtoNovoDto){
 		Produto produtoAtualizado = produtoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Produto não encontrado!"));
-		ProdutoDtoRetorno produtoDtoAtualizado = null;
+		ProdutoDto produtoDtoAtualizado = null;
 		if (produtoAtualizado != null) {
 				produtoAtualizado.setNome(produtoNovoDto.getNome());
 				produtoAtualizado.setDescricao(produtoNovoDto.getDescricao());
 				produtoAtualizado.setQtd_estoque(produtoNovoDto.getQtd_estoque());
 				produtoAtualizado.setValor_unitario(produtoNovoDto.getValor_unitario());
-				produtoDtoAtualizado = modelMapper.map(produtoAtualizado, ProdutoDtoRetorno.class);
+				produtoAtualizado.setData_cadastro(produtoNovoDto.getData_cadastro());
+				produtoAtualizado.setCategoria(categoriaRepository.findById(produtoNovoDto.getCategoria().getId_categoria()).orElseThrow(() -> new NoSuchElementException("Categoria não encontrado!")));
+				produtoDtoAtualizado = modelMapper.map(produtoAtualizado, ProdutoDto.class);
 				
 				produtoRepository.save(produtoAtualizado);
 		}

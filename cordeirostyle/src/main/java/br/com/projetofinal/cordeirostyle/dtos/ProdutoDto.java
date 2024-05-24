@@ -1,5 +1,7 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
+import java.time.LocalDate;
+
 public class ProdutoDto {
 
 	private Integer id_produto;
@@ -7,6 +9,7 @@ public class ProdutoDto {
 	private String descricao;
 	private double valor_unitario;
 	private Integer qtd_estoque;
+	private LocalDate data_cadastro;
 	private CategoriaDtoRetorno categoria;
 
 	public String getNome() {
@@ -55,6 +58,15 @@ public class ProdutoDto {
 
 	public void setQtd_estoque(Integer qtd_estoque) {
 		this.qtd_estoque = qtd_estoque;
+	}
+	
+
+	public LocalDate getData_cadastro() {
+		return data_cadastro;
+	}
+
+	public void setData_cadastro(LocalDate data_cadastro) {
+		this.data_cadastro = data_cadastro;
 	}
 
 	@Override
