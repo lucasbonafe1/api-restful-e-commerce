@@ -1,12 +1,10 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-import java.util.List;
+public class CategoriaDtoRetorno {
 
-public class CategoriaDto {
 	private Integer id_categoria;
 	private String nome;
 	private String descricao;
-	private List<ProdutoDto> produtoDto;
 	
 	public String getNome() {
 		return nome;
@@ -19,13 +17,6 @@ public class CategoriaDto {
 	}
 	public void setDescricao(String categoria) {
 		this.descricao = categoria;
-	}
-	
-	public List<ProdutoDto> getProdutoDto() {
-		return produtoDto;
-	}
-	public void setProdutoDto(List<ProdutoDto> produtoDto) {
-		this.produtoDto = produtoDto;
 	}
 	public Integer getId_categoria() {
 		return id_categoria;
