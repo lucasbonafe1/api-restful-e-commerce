@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -53,8 +54,9 @@ public class Produto {
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
-	@OneToMany(mappedBy = "produto")
-	private List<ItemPedido> itensPedidos;
+	 @JsonIgnore // Adicione esta anotação para ignorar a serialização da lista itensPedidos
+	    @OneToMany(mappedBy = "produto")
+	    private List<ItemPedido> itensPedidos;
 
 	public Produto(String nome, String descricao, int qtd_estoque,double valor_unitario,
 			byte[] imagem,Categoria categoria

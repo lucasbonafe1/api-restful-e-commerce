@@ -25,58 +25,30 @@ public class ItemPedidoController {
 	ItemPedidoService itemPedidoService;
 
 	@GetMapping
-	public ResponseEntity<List<ItemPedido>> findAll() {
+	public ResponseEntity<List<ItemPedidoDto>> findAll() {
 		return new ResponseEntity<>(itemPedidoService.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ItemPedido> findById(@PathVariable Integer id) {
-		ItemPedido itemEncontrado = itemPedidoService.findById(id);
-		if (itemEncontrado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(itemEncontrado,HttpStatus.OK);
-		}
-
+	public ResponseEntity<?> findById(@PathVariable Integer id) {
+			return new ResponseEntity<>(itemPedidoService.findById(id), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<ItemPedido> save(@RequestBody ItemPedido itemPedido) {
+	public ResponseEntity<?> save(@RequestBody ItemPedidoDto itemPedido) {
 		return new ResponseEntity<>(itemPedidoService.save(itemPedido), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ItemPedido> update(@PathVariable Integer id, @RequestBody ItemPedido itemNovo) {
-		ItemPedido itemAtualizado = itemPedidoService.update(id, itemNovo);
-		if (itemAtualizado != null) {
-			return new ResponseEntity<>(itemAtualizado, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ItemPedidoDto itemNovoDto) {
+		return new ResponseEntity<>(itemPedidoService.findById(id), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ItemPedido> delete(@PathVariable Integer id) {
-		ItemPedido itemDeletado = itemPedidoService.findById(id);
-		if (itemPedidoService == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		itemPedidoService.deleteById(id);
-		return new ResponseEntity<>(itemDeletado, HttpStatus.OK);
+	public ResponseEntity<?> delete(@PathVariable Integer id) {
+			return new ResponseEntity<>(itemPedidoService.deleteById(id), HttpStatus.OK);
+		
 	}
 	
-	@GetMapping("/dto")
-	public ResponseEntity<List<ItemPedidoDto>> findAllDto() {
-		return new ResponseEntity<>(itemPedidoService.findAllDto(), HttpStatus.OK);
-	}
-	
-	@GetMapping("/dto/{id}")
-	public ResponseEntity<ItemPedidoDto> findByIdDto(@PathVariable Integer id) {
-		ItemPedidoDto itemEncontrado = itemPedidoService.findByIdDto(id);
-		if (itemEncontrado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(itemEncontrado,HttpStatus.OK);
-		}
-	}
 
 }

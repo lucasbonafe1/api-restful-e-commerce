@@ -2,94 +2,84 @@ package br.com.projetofinal.cordeirostyle.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.aspectj.lang.reflect.NoSuchAdviceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.projetofinal.cordeirostyle.dtos.CategoriaDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
+import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
 import br.com.projetofinal.cordeirostyle.repositories.ItemPedidoRepository;
 
 @Service
 public class ItemPedidoService {
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
-	
+
 	@Autowired
 	ModelMapper modelMapper;
 
-	public List<ItemPedido> findAll() {
-		return itemPedidoRepository.findAll();
+	public List<ItemPedidoDto> findAll() {
+		List<ItemPedido> items = itemPedidoRepository.findAll();
+		List<ItemPedidoDto> itemsDto = new ArrayList<>();
+
+		if (items.isEmpty()) {
+			throw new NoSuchElementException("Não há items pedidos registrados!");
+		}
+		for (ItemPedido item : items) {
+			ItemPedidoDto itemTransformado = modelMapper.map(item, ItemPedidoDto.class);
+	        itemsDto.add(itemTransformado);
+		}
+		return itemsDto;
 	}
 
-	public ItemPedido findById(Integer id) {
-		return itemPedidoRepository.findById(id).orElse(null);
+	public ItemPedidoDto findById(Integer id) {
+		ItemPedido item = itemPedidoRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Item não encontrado!"));
+		ItemPedidoDto itemPedidoDto = null;
+		if (item != null) {
+			itemPedidoDto = modelMapper.map(item, ItemPedidoDto.class);
+		}
+		return itemPedidoDto;
 	}
 
-	public ItemPedido save(ItemPedido itemPedido) {
-		return itemPedidoRepository.save(itemPedido);
+	public ItemPedidoDtoRetorno save(ItemPedidoDto itemPedidoDto) {
+		ItemPedido item = modelMapper.map(itemPedidoDto, ItemPedido.class);
+		ItemPedido itemSalvo = itemPedidoRepository.save(item);
+		ItemPedidoDtoRetorno itemRetorno = modelMapper.map(itemSalvo, ItemPedidoDtoRetorno.class);
+		return itemRetorno;
+
 	}
 
-	public ItemPedido update(Integer id, ItemPedido novoItemPedido) {
-		ItemPedido itemPedidoAtualizado = itemPedidoRepository.findById(id).orElse(null);
-		if(itemPedidoAtualizado != null) {
-			try {
-				itemPedidoAtualizado.setPercentual_desconto(novoItemPedido.getPercentual_desconto());
-				itemPedidoAtualizado.setPreco_venda(novoItemPedido.getPreco_venda());
-				itemPedidoAtualizado.setQuantidade(novoItemPedido.getQuantidade());	
+	public ItemPedidoDtoRetorno update(Integer id, ItemPedidoDto novoItemPedidoDto) {
+		ItemPedido itemPedidoAtualizado = itemPedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Item não encontrado!"));
+		ItemPedidoDtoRetorno itemDtoAtualizado = null;
+		if (itemPedidoAtualizado != null) {
+			
+				itemPedidoAtualizado.setPercentual_desconto(novoItemPedidoDto.getPercentual_desconto());
+				itemPedidoAtualizado.setPreco_venda(novoItemPedidoDto.getPreco_venda());
+				itemPedidoAtualizado.setQuantidade(novoItemPedidoDto.getQuantidade());
+				itemDtoAtualizado = modelMapper.map(itemPedidoAtualizado, ItemPedidoDtoRetorno.class);
 				itemPedidoRepository.save(itemPedidoAtualizado);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
 		}
-		return itemPedidoAtualizado;
+		return itemDtoAtualizado;
 	}
 
-	public ItemPedido deleteById(Integer id) {
-		ItemPedido itemPedidoDeletada = itemPedidoRepository.findById(id).orElse(null);
-		if (itemPedidoDeletada != null) {
-			try {
-				itemPedidoRepository.deleteById(id);
-				return itemPedidoDeletada;
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-
+	public ItemPedidoDtoRetorno deleteById(Integer id) {
+		ItemPedido itemPedidoDeletado = itemPedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Item não encontrado!"));
+		ItemPedidoDtoRetorno itemPedidoDeletadoDto = null;
+		if (itemPedidoDeletado != null) {
+			itemPedidoDeletadoDto = modelMapper.map(itemPedidoDeletado, ItemPedidoDtoRetorno.class);
+			itemPedidoRepository.deleteById(id);
 		}
-		return itemPedidoDeletada;
+		return itemPedidoDeletadoDto;
 	}
-	
-	public List<ItemPedidoDto> findAllDto() {
-		    List<ItemPedido> itens = itemPedidoRepository.findAll();
-		    List<ItemPedidoDto> itensDto = new ArrayList<>();
 
-		    for (ItemPedido itemPedido : itens) {
-		        ItemPedidoDto itemTransformado = modelMapper.map(itemPedido, ItemPedidoDto.class);
-		        Produto produto = itemPedido.getProduto();
-		        
-		        if(produto != null) {
-		        	ProdutoDto produtoDto = modelMapper.map(produto, ProdutoDto.class);
-			        itemTransformado.setProdutoDto(produtoDto);
-		        }
-		        
-		        itensDto.add(itemTransformado);
-		    }
-
-		    return itensDto;
-		}
-	
-	public ItemPedidoDto findByIdDto(Integer id) {
-		ItemPedidoDto itemDto = modelMapper.map(itemPedidoRepository.findById(id).orElse(null), ItemPedidoDto.class);
-		ItemPedido itemPedido = itemPedidoRepository.findById(id).orElse(null);
-		Produto produto = itemPedido.getProduto();
-		if(produto != null) {
-			ProdutoDto produtoDto = modelMapper.map(produto, ProdutoDto.class);
-			itemDto.setProdutoDto(produtoDto);
-		}
-		return itemDto;
-	}
-	
 }

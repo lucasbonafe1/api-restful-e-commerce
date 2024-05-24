@@ -2,6 +2,7 @@ package br.com.projetofinal.cordeirostyle.dtos;
 
 public class ItemPedidoDto {
 
+	private Integer id_item_pedido;
 	private Integer quantidade;
 	private double preco_venda;
 	private double percentual_desconto;
@@ -56,5 +57,15 @@ public class ItemPedidoDto {
 	public void setProdutoDto(ProdutoDto produtoDto) {
 		this.produtoDto = produtoDto;
 	}
+
+	public Integer getId_item_pedido() {
+		return id_item_pedido;
+	}
+
+	public void setId_item_pedido(Integer id_item_pedido) {
+		this.id_item_pedido = id_item_pedido;
+	}
+	
+	
 
 }

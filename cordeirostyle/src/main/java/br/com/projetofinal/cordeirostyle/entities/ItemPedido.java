@@ -15,10 +15,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "item_pedido")
 @JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id_endereco",
-        scope = Endereco.class
-)
+	    generator = ObjectIdGenerators.PropertyGenerator.class,
+	    property = "id_item_pedido",
+	    scope = ItemPedido.class
+	)
+
 public class ItemPedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,16 +30,16 @@ public class ItemPedido {
 	private Integer quantidade;
 	
 	@Column(name = "preco_venda")
-	private double preco_venda;
+	private Double preco_venda;
 	
 	@Column(name = "percentual_desconto")
-	private double percentual_desconto;
+	private Double percentual_desconto;
 	
 	@Column(name = "valor_bruto")
-	private double valor_bruto;
+	private Double valor_bruto;
 	
 	@Column(name = "valor_liquido")
-	private double valor_liquido;
+	private Double valor_liquido;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_pedido")
@@ -64,35 +65,35 @@ public class ItemPedido {
 		this.quantidade = quantidade;
 	}
 
-	public double getPreco_venda() {
+	public Double getPreco_venda() {
 		return preco_venda;
 	}
 
-	public void setPreco_venda(double preco_venda) {
+	public void setPreco_venda(Double preco_venda) {
 		this.preco_venda = preco_venda;
 	}
 
-	public double getPercentual_desconto() {
+	public Double getPercentual_desconto() {
 		return percentual_desconto * 100;
 	}
 
-	public void setPercentual_desconto(double percentual_desconto) {
+	public void setPercentual_desconto(Double percentual_desconto) {
 		this.percentual_desconto = percentual_desconto/100;
 	}
 
-	public double getValor_bruto() {
+	public Double getValor_bruto() {
 		return calcValorBruto();
 	}
 
-	public void setValor_bruto(double valor_bruto) {
+	public void setValor_bruto(Double valor_bruto) {
 		this.valor_bruto = calcValorBruto();
 	}
 
-	public double getValor_liquido() {
+	public Double getValor_liquido() {
 		return calcValorLiquido();
 	}
 
-	public void setValor_liquido(double valor_liquido) {
+	public void setValor_liquido(Double valor_liquido) {
 		this.valor_liquido = calcValorLiquido();
 	}
 	
@@ -115,15 +116,15 @@ public class ItemPedido {
 
 	
 	
-	public double calcValorBruto() {
-		double valorFinal = this.preco_venda*this.quantidade;
+	public Double calcValorBruto() {
+		Double valorFinal = this.preco_venda*this.quantidade;
 		return valorFinal;
 	}
 	
-	public double calcValorLiquido() {
-		double valorBruto = calcValorBruto();
-		double valorDesconto = valorBruto * this.percentual_desconto;
-		double valorLiquido = valorBruto - valorDesconto;
+	public Double calcValorLiquido() {
+		Double valorBruto = calcValorBruto();
+		Double valorDesconto = valorBruto * this.percentual_desconto;
+		Double valorLiquido = valorBruto - valorDesconto;
 		return valorLiquido;
 	}
 	
