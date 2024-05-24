@@ -41,7 +41,7 @@ public class ItemPedidoController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ItemPedidoDto itemNovoDto) {
-		return new ResponseEntity<>(itemPedidoService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<>(itemPedidoService.update(id, itemNovoDto), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
