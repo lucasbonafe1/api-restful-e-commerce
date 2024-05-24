@@ -2,6 +2,7 @@ package br.com.projetofinal.cordeirostyle.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.projetofinal.cordeirostyle.dtos.CategoriaDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
-import br.com.projetofinal.cordeirostyle.entities.Categoria;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.ProdutoRepository;
 
@@ -24,72 +24,60 @@ public class ProdutoService {
 	@Autowired
 	ModelMapper modelMapper;
 	
-	public List<Produto> findAll(){
-		return produtoRepository.findAll();
-	}
-	
-	public Produto findById(@PathVariable Integer id){
-		return produtoRepository.findById(id).orElse(null);
-	}
-	
-	public Produto save(@RequestBody Produto produto){
-		return produtoRepository.save(produto);
-	}
-	public Produto update(@PathVariable Integer id, @RequestBody Produto produtoNovo){
-		Produto produto = produtoRepository.findById(id).orElse(null);
-		if (produto != null) {
-			try {
-				produto.setNome(produtoNovo.getNome());
-				produto.setDescricao(produtoNovo.getDescricao());
-				produto.setQtd_estoque(produtoNovo.getQtd_estoque());
-				produto.setValor_unitario(produtoNovo.getValor_unitario());
-				produto.setImagem(produtoNovo.getImagem());
-				
-				produtoRepository.save(produto);
-			} catch (Exception e) {
-				System.out.println(e);
-			  }
-		}
-		return produto;
-	}
-	public Produto deleteById(Integer id) {
-		Produto produtoDeletado = produtoRepository.findById(id).orElse(null); 
-		
-			if (produtoDeletado != null) {
-				try {
-					produtoRepository.deleteById(id);
-					return produtoDeletado;
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			
-			}	
-			return produtoDeletado;
-		}
-	
-	//DTO's
-	
-	//FindAll
-	public List<ProdutoDto> findAllDto() {
+	public List<ProdutoDto> findAll() throws NoSuchElementException{
 		List<Produto> produtos = produtoRepository.findAll();
 		List<ProdutoDto> produtosDto = new ArrayList<>();
+
+		if(produtos.isEmpty()) {
+			throw new NoSuchElementException("Não há produtos registrados!");
+		}
 		
 		for (Produto produto : produtos) {
-			ProdutoDto produtoDtoAtual = modelMapper.map(produto, ProdutoDto.class);
-			Categoria categoria = produto.getCategoria();
-			CategoriaDto categoriaDto = modelMapper.map(categoria, CategoriaDto.class);
-			produtoDtoAtual.setCategoria(categoriaDto);
-
-			produtosDto.add(produtoDtoAtual);
+			ProdutoDto produtoTransformado = modelMapper.map(produto, ProdutoDto.class);
+			produtosDto.add(produtoTransformado);
 		}
-        return produtosDto;
-    }
-	//FindById
+		return produtosDto;
+	}
 	
-	public ProdutoDto findByIdDto(Integer id) {
-		ProdutoDto produtoDto = modelMapper.map(produtoRepository.findById(id).orElse(null), ProdutoDto.class);
+	public ProdutoDto findById(Integer id) {
+		Produto produto = produtoRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Produto não encontrado!"));
+		ProdutoDto produtoDto = null;
+		
+		if(produto != null) {
+			produtoDto = modelMapper.map(produto, ProdutoDto.class);
+		}
+		
 		return produtoDto;
 	}
 	
+	public ProdutoDtoRetorno save(@RequestBody ProdutoDto produtoDto){
+		Produto produto = modelMapper.map(produtoDto, Produto.class);
+		Produto produtoSalvo = produtoRepository.save(produto);
+		ProdutoDtoRetorno produtoRetorno = modelMapper.map(produtoSalvo, ProdutoDtoRetorno.class);
+		return produtoRetorno;
+	}
 	
+	public ProdutoDtoRetorno update(@PathVariable Integer id, @RequestBody ProdutoDto produtoNovoDto){
+		Produto produtoAtualizado = produtoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Produto não encontrado!"));
+		ProdutoDtoRetorno produtoDtoAtualizado = null;
+		if (produtoAtualizado != null) {
+				produtoAtualizado.setNome(produtoNovoDto.getNome());
+				produtoAtualizado.setDescricao(produtoNovoDto.getDescricao());
+				produtoAtualizado.setQtd_estoque(produtoNovoDto.getQtd_estoque());
+				produtoAtualizado.setValor_unitario(produtoNovoDto.getValor_unitario());
+				produtoDtoAtualizado = modelMapper.map(produtoAtualizado, ProdutoDtoRetorno.class);
+				
+				produtoRepository.save(produtoAtualizado);
+		}
+		return produtoDtoAtualizado;
+	}
+	public ProdutoDtoRetorno deleteById(Integer id) {
+		Produto produtoDeletado = produtoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Produto não encontrado!"));
+		ProdutoDtoRetorno produtoDtoDeletado = null;
+		if (produtoDeletado != null) {
+			produtoDtoDeletado = modelMapper.map(produtoDeletado, ProdutoDtoRetorno.class);
+			produtoRepository.deleteById(id);
+		}	
+		return produtoDtoDeletado;
+	}
 }

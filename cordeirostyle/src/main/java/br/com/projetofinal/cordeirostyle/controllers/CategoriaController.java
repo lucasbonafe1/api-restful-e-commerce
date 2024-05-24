@@ -41,27 +41,11 @@ public class CategoriaController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?>update(@PathVariable Integer id, @RequestBody CategoriaDto novaCategoriaDto) {
-		CategoriaDto categoriaUpdate = categoriaService.findById(id);
-		if(categoriaUpdate != null) {
-			return new ResponseEntity<>(categoriaService.update(id, novaCategoriaDto), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>("{\"error\": \"Categoria Não Encontrada\"}",HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(categoriaService.update(id, novaCategoriaDto), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Integer id){
-		CategoriaDto categoria = categoriaService.findById(id);
-		if(categoria == null) {
-			return new ResponseEntity<>("{\"error\": \"Categoria Não Encontrada\"}", HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(categoriaService.deleteById(id), HttpStatus.OK);
-		}
+		return new ResponseEntity<>(categoriaService.deleteById(id), HttpStatus.OK);
 	}
-	
-//DTOs:
-	
-	
-	
-
 }

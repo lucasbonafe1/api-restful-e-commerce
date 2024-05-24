@@ -6,7 +6,7 @@ public class CategoriaDto {
 	private Integer id_categoria;
 	private String nome;
 	private String descricao;
-	private List<ProdutoDto> produtoDto;
+	private List<ProdutoDtoRetorno> produtos;
 	
 	public String getNome() {
 		return nome;
@@ -21,11 +21,11 @@ public class CategoriaDto {
 		this.descricao = categoria;
 	}
 	
-	public List<ProdutoDto> getProdutoDto() {
-		return produtoDto;
+	public List<ProdutoDtoRetorno> getProdutos() {
+		return produtos;
 	}
-	public void setProdutoDto(List<ProdutoDto> produtoDto) {
-		this.produtoDto = produtoDto;
+	public void setProdutoDto(List<ProdutoDtoRetorno> produtoDto) {
+		this.produtos = produtoDto;
 	}
 	public Integer getId_categoria() {
 		return id_categoria;

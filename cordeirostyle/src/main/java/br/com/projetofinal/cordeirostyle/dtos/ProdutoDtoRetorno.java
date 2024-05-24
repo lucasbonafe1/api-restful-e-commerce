@@ -1,13 +1,15 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
-public class ProdutoDto {
+import java.time.LocalDate;
+
+public class ProdutoDtoRetorno {
 
 	private Integer id_produto;
 	private String nome;
 	private String descricao;
 	private double valor_unitario;
 	private Integer qtd_estoque;
-	private CategoriaDtoRetorno categoria;
+	private LocalDate data_cadastro;
 
 	public String getNome() {
 		return nome;
@@ -33,14 +35,6 @@ public class ProdutoDto {
 		this.valor_unitario = valor_unitario;
 	}
 
-	public CategoriaDtoRetorno getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(CategoriaDtoRetorno categoria) {
-		this.categoria = categoria;
-	}
-	 
 	public Integer getId_produto() {
 		return id_produto;
 	}
@@ -55,6 +49,14 @@ public class ProdutoDto {
 
 	public void setQtd_estoque(Integer qtd_estoque) {
 		this.qtd_estoque = qtd_estoque;
+	}
+
+	public LocalDate getData_cadastro() {
+		return data_cadastro;
+	}
+
+	public void setData_cadastro(LocalDate data_cadastro) {
+		this.data_cadastro = data_cadastro;
 	}
 
 	@Override

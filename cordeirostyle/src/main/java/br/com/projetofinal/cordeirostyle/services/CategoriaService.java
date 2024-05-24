@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.CategoriaDto;
 import br.com.projetofinal.cordeirostyle.dtos.CategoriaDtoRetorno;
-import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Categoria;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
@@ -34,10 +34,10 @@ public class CategoriaService {
 		for (Categoria categoria : categorias) {
 			CategoriaDto categoriaTransformada = modelMapper.map(categoria, CategoriaDto.class);
 			List<Produto> produtos = categoria.getProduto();
-			List<ProdutoDto> produtosDto = new ArrayList<>();
+			List<ProdutoDtoRetorno> produtosDto = new ArrayList<>();
 			
 			for (Produto produto : produtos) {
-				produtosDto.add(modelMapper.map(produto, ProdutoDto.class));
+				produtosDto.add(modelMapper.map(produto, ProdutoDtoRetorno.class));
 			}
 			
 			categoriaTransformada.setProdutoDto(produtosDto);
@@ -50,7 +50,7 @@ public class CategoriaService {
 	public CategoriaDto findById(Integer id) {
 		Categoria categoria = categoriaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
 		CategoriaDto categoriaDto = null;
-		List<ProdutoDto> produtosDto = new ArrayList<>();
+		List<ProdutoDtoRetorno> produtosDto = new ArrayList<>();
 		
 		if(categoria != null) {
 			categoriaDto = modelMapper.map(categoria, CategoriaDto.class);
@@ -58,7 +58,7 @@ public class CategoriaService {
 			
 			if(produtos != null) {
 				for (Produto produto : produtos) {
-					produtosDto.add(modelMapper.map(produto, ProdutoDto.class));
+					produtosDto.add(modelMapper.map(produto, ProdutoDtoRetorno.class));
 				}
 			}
 			categoriaDto.setProdutoDto(produtosDto);
@@ -74,7 +74,7 @@ public class CategoriaService {
 	}
 
 	public CategoriaDtoRetorno update(Integer id, CategoriaDto novaCategoriaDto) {
-		Categoria categoriaAtualizada = categoriaRepository.findById(id).orElse(null);
+		Categoria categoriaAtualizada = categoriaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
 		CategoriaDtoRetorno categoriaDtoAtualizada = null;
 		if (categoriaAtualizada != null) {
 				categoriaAtualizada.setNome(novaCategoriaDto.getNome());
@@ -86,12 +86,11 @@ public class CategoriaService {
 	}
 
 	public CategoriaDtoRetorno deleteById(Integer id) {
-		Categoria categoriaDeletada = categoriaRepository.findById(id).orElse(null);
+		Categoria categoriaDeletada = categoriaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
 		CategoriaDtoRetorno CategoriaDeletadaDto = null;
 		if (categoriaDeletada != null) {
 				CategoriaDeletadaDto = modelMapper.map(categoriaDeletada, CategoriaDtoRetorno.class);
 				categoriaRepository.deleteById(id);
-				return CategoriaDeletadaDto;
 		}
 		return CategoriaDeletadaDto;
 	}
