@@ -105,6 +105,10 @@ public class ClienteService {
 		ClienteDto clienteDtoDeletado = null;
 		if (clienteDeletado != null) {
 			clienteDtoDeletado = modelMapper.map(clienteDeletado, ClienteDto.class);
+			
+			EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(clienteDeletado.getEndereco(),EnderecoDtoRetorno.class);
+			clienteDtoDeletado.setEnderecoDto(enderecoDtoRetorno);
+			
 			clienteRepository.deleteById(id);
 		}
 		return clienteDtoDeletado;
