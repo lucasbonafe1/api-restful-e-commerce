@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.hibernate.TransientPropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	ObjectMapper objectMapper;
+	
+	@ExceptionHandler(TransientPropertyValueException.class)
+	public ResponseEntity<?> HandleTransientPropertyValueException(TransientPropertyValueException exception,
+			WebRequest request) {
+
+		ProblemDetail pd = ProblemDetail
+		        .forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Campo para criação de entidade inválido, error: '" 
+		        	+ exception.getLocalizedMessage());
+		    pd.setType(URI.create("http://localhost:8080/errors/internal-server-error"));
+		    pd.setTitle("Erro Interno");
+		    pd.setProperty("hostname", "localhost");
+		    return ResponseEntity.status(500).body(pd);
+		}
 	
 	@ExceptionHandler(HttpClientErrorException.class)
 	public ResponseEntity<?> HandleHttpClientErrorException(HttpClientErrorException exception,
