@@ -4,10 +4,12 @@ public class EnderecoDto {
 	private Integer id_endereco;
 	private String cep;
 	private String rua;
+	private Integer numero;
+	private String complemento;
 	private String bairro;
 	private String cidade;
 	private String uf;
-	private ClienteDto cliente;
+	private ClienteDtoRetorno cliente;
 	
 	public Integer getId_endereco() {
 		return id_endereco;
@@ -23,6 +25,18 @@ public class EnderecoDto {
 	}
 	public String getRua() {
 		return rua;
+	}
+	public Integer getNumero() {
+		return numero;
+	}
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+	public String getComplemento() {
+		return complemento;
+	}
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 	public void setRua(String rua) {
 		this.rua = rua;
@@ -45,14 +59,10 @@ public class EnderecoDto {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	public String getCliente() {
-		if(cliente != null) {
-		return cliente.getNome_completo();
-		} else {
-			return null;
-		}
+	public ClienteDtoRetorno getCliente() {
+		return cliente;
 	}
-	public void setCliente(ClienteDto cliente) {
+	public void setCliente(ClienteDtoRetorno cliente) {
 		this.cliente = cliente;
 	}
 	

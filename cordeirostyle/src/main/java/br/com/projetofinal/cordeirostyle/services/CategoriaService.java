@@ -87,12 +87,12 @@ public class CategoriaService {
 
 	public CategoriaDtoRetorno deleteById(Integer id) {
 		Categoria categoriaDeletada = categoriaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
-		CategoriaDtoRetorno CategoriaDeletadaDto = null;
+		CategoriaDtoRetorno categoriaDeletadaDto = null;
 		if (categoriaDeletada != null) {
-				CategoriaDeletadaDto = modelMapper.map(categoriaDeletada, CategoriaDtoRetorno.class);
+				categoriaDeletadaDto = modelMapper.map(categoriaDeletada, CategoriaDtoRetorno.class);
 				categoriaRepository.deleteById(id);
 		}
-		return CategoriaDeletadaDto;
+		return categoriaDeletadaDto;
 	}
 
 }

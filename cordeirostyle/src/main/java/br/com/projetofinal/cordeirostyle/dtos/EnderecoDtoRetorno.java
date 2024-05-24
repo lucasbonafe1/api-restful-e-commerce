@@ -4,6 +4,8 @@ public class EnderecoDtoRetorno {
 	private Integer id_endereco;
 	private String cep;
 	private String rua;
+	private Integer numero;
+	private String complemento;
 	private String bairro;
 	private String cidade;
 	private String uf;
@@ -25,6 +27,18 @@ public class EnderecoDtoRetorno {
 	}
 	public void setRua(String rua) {
 		this.rua = rua;
+	}
+	public Integer getNumero() {
+		return numero;
+	}
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+	public String getComplemento() {
+		return complemento;
+	}
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 	public String getBairro() {
 		return bairro;

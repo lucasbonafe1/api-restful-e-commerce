@@ -2,6 +2,7 @@ package br.com.projetofinal.cordeirostyle.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.projetofinal.cordeirostyle.dtos.CepDto;
-import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
-import br.com.projetofinal.cordeirostyle.entities.Cliente;
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.repositories.EnderecoRepository;
 
@@ -21,25 +21,40 @@ public class EnderecoService {
 
 	@Autowired
 	EnderecoRepository enderecoRepository;
-	
+
 	@Autowired
 	ModelMapper modelMapper;
-	
+
 	@Autowired
 	CepRestService cepRestService;
-	
-	public List<Endereco> findAll(){
-		return enderecoRepository.findAll();
+
+	public List<EnderecoDto> findAll() throws NoSuchElementException {
+		List<Endereco> enderecos = enderecoRepository.findAll();
+		List<EnderecoDto> enderecosDto = new ArrayList<>();
+
+		if (enderecos.isEmpty()) {
+			throw new NoSuchElementException("Não há endereços registrados!");
+		}
+
+		for (Endereco endereco : enderecos) {
+			EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
+			enderecosDto.add(enderecoDto);
+		}
+
+		return enderecosDto;
 	}
-	
-	public Endereco findById(@PathVariable Integer id){
-		return enderecoRepository.findById(id).orElse(null);
+
+	public EnderecoDto findById(@PathVariable Integer id) {
+		Endereco endereco = enderecoRepository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Endereco com id correspondente não encontrado!"));
+		EnderecoDto enderecoDto = modelMapper.map(endereco, EnderecoDto.class);
+		return enderecoDto;
 	}
-	
-	public Endereco save(@RequestBody CepDto cep){
+
+	public EnderecoDtoRetorno save(@RequestBody CepDto cep) {
 		CepDto enderecoConsultado = cepRestService.findUserByCepFromViaCep(cep.getCep());
 		Endereco endereco = new Endereco();
-		
+
 		endereco.setCep(enderecoConsultado.getCep());
 		endereco.setRua(enderecoConsultado.getLogradouro());
 		endereco.setBairro(enderecoConsultado.getBairro());
@@ -47,72 +62,41 @@ public class EnderecoService {
 		endereco.setNumero(cep.getNumero());
 		endereco.setComplemento(cep.getComplemento());
 		endereco.setUf(enderecoConsultado.getUf());
-		
-		return enderecoRepository.save(endereco);
+
+		Endereco enderecoSalvo = enderecoRepository.save(endereco);
+		EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(enderecoSalvo, EnderecoDtoRetorno.class);
+
+		return enderecoDtoRetorno;
 	}
-	
-	public Endereco update(@PathVariable Integer id, @RequestBody Endereco enderecoNovo){
-		Endereco endereco = enderecoRepository.findById(id).orElse(null);
+
+	public EnderecoDtoRetorno update(@PathVariable Integer id, @RequestBody EnderecoDto enderecoNovo) {
+		Endereco endereco = enderecoRepository.findById(id).orElseThrow(
+				() -> new NoSuchElementException("Endereco com id correspondente não encontrado!"));
+		EnderecoDtoRetorno enderecoDtoRetorno = null;
 		if (endereco != null) {
-			try {
-				endereco.setCep(enderecoNovo.getCep());
-				endereco.setRua(enderecoNovo.getRua());
-				endereco.setBairro(enderecoNovo.getBairro());
-				endereco.setCidade(enderecoNovo.getCidade());
-				endereco.setNumero(enderecoNovo.getNumero());
-				endereco.setComplemento(enderecoNovo.getComplemento());
-				endereco.setUf(enderecoNovo.getUf());
-				
-				enderecoRepository.save(endereco);
-			} catch (Exception e) {
-				System.out.println(e);
-			  }
+			endereco.setCep(enderecoNovo.getCep());
+			endereco.setRua(enderecoNovo.getRua());
+			endereco.setBairro(enderecoNovo.getBairro());
+			endereco.setCidade(enderecoNovo.getCidade());
+			endereco.setNumero(enderecoNovo.getNumero());
+			endereco.setComplemento(enderecoNovo.getComplemento());
+			endereco.setUf(enderecoNovo.getUf());
+			
+			enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
+
+			enderecoRepository.save(endereco);
 		}
-		return endereco;
+		return enderecoDtoRetorno;
 	}
-	public Endereco deleteById(Integer id) {
-		Endereco enderecoDeletado = enderecoRepository.findById(id).orElse(null); 
-		
-			if (enderecoDeletado != null) {
-				try {
-					enderecoRepository.deleteById(id);
-					return enderecoDeletado;
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			
-			}	
-			return enderecoDeletado;
+
+	public EnderecoDtoRetorno deleteById(Integer id) {
+		Endereco enderecoDeletado = enderecoRepository.findById(id).orElseThrow(
+				() -> new NoSuchElementException("Endereco com id correspondente não encontrado!"));
+		EnderecoDtoRetorno enderecoDtoDeletado = null;
+		if (enderecoDeletado != null) {
+			enderecoDtoDeletado = modelMapper.map(enderecoDeletado, EnderecoDtoRetorno.class);
+			enderecoRepository.deleteById(id);
 		}
-	
-	//FindAll
-		public List<EnderecoDto> findAllDto() {
-			List<Endereco> enderecos = enderecoRepository.findAll();
-			List<EnderecoDto> enderecosDto = new ArrayList<>();
-			
-			for (Endereco endereco : enderecos) {
-				EnderecoDto enderecosDtoAtual = modelMapper.map(endereco, EnderecoDto.class);
-				
-				ClienteDto clienteDto;
-				Cliente cliente;
-				
-				cliente = endereco.getCliente();
-				if (cliente != null) {
-					 clienteDto = modelMapper.map(cliente, ClienteDto.class); 
-					enderecosDtoAtual.setCliente(clienteDto);
-					
-				}
-				enderecosDto.add(enderecosDtoAtual);
-			} 
-	        return enderecosDto;
-	    	}
-		//FindById
-		
-		public EnderecoDto findByIdDto(Integer id) {
-			EnderecoDto enderecoDto = modelMapper.map(enderecoRepository.findById(id).orElse(null), EnderecoDto.class);
-			return enderecoDto;
-		}
-		
-		
-	
+		return enderecoDtoDeletado;
+	}
 }

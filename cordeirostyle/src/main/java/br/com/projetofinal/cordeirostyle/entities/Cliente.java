@@ -43,7 +43,6 @@ public class Cliente {
 	@Column(name = "data_nascimento")
 	private LocalDate data_nascimento;
 	
-	
 	@OneToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;

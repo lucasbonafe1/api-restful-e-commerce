@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetofinal.cordeirostyle.dtos.CepDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
-import br.com.projetofinal.cordeirostyle.entities.Endereco;
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.services.CepRestService;
 import br.com.projetofinal.cordeirostyle.services.EnderecoService;
 
@@ -31,67 +31,29 @@ public class EnderecoController {
 	CepRestService cepRestService;
 	
 	@GetMapping
-	public ResponseEntity<List<Endereco>> findAll() {
+	public ResponseEntity<List<EnderecoDto>> findAll() {
 		return new ResponseEntity<>(enderecoService.findAll(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Endereco> findById(@PathVariable Integer id){
-		Endereco enderecoEncontrado = enderecoService.findById(id);
-		if (enderecoEncontrado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<EnderecoDto> findById(@PathVariable Integer id){
+		EnderecoDto enderecoEncontrado = enderecoService.findById(id);
 		return new ResponseEntity<>(enderecoEncontrado,HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Endereco> save(@RequestBody CepDto cep) {
+	public ResponseEntity<EnderecoDtoRetorno> save(@RequestBody CepDto cep) {
 		return new ResponseEntity<>(enderecoService.save(cep), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Endereco>update(@PathVariable Integer id,@RequestBody Endereco enderecoNovo){
-		Endereco enderecoUpdate = enderecoService.update(id,enderecoNovo);
-		if(enderecoUpdate != null) {
-			 return new ResponseEntity<>(enderecoUpdate, HttpStatus.OK);
-		}
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<EnderecoDtoRetorno>update(@PathVariable Integer id,@RequestBody EnderecoDto enderecoNovo){
+		return new ResponseEntity<>(enderecoService.update(id,enderecoNovo), HttpStatus.OK);
     }
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Endereco> deleteById(@PathVariable Integer id) {
-		Endereco enderecoDeletado = enderecoService.findById(id);
-
-		if (enderecoDeletado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		enderecoService.deleteById(id);
-		return new ResponseEntity<>(enderecoDeletado, HttpStatus.OK);
+	public ResponseEntity<EnderecoDtoRetorno> deleteById(@PathVariable Integer id) {
+		return new ResponseEntity<>(enderecoService.deleteById(id), HttpStatus.OK);
 	}
-	
-	@GetMapping("/dto")
-	public ResponseEntity<List<EnderecoDto>> findAllDto() {
-		return new ResponseEntity<>(enderecoService.findAllDto(), HttpStatus.OK);
-	}
-	
-	@GetMapping("/dto/{id}")
-	public ResponseEntity<EnderecoDto> findByIdDto(@PathVariable Integer id) {
-		EnderecoDto enderecoDtoEncontrado = enderecoService.findByIdDto(id);
-		if (enderecoDtoEncontrado == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(enderecoDtoEncontrado,HttpStatus.OK);
-		}
-	}
-	
-	
-//Cep da ViaCep (Api externa):
-	
-	@GetMapping("/cep/{cep}")
-	public ResponseEntity<CepDto> findUserByIdFromViaCep(@PathVariable String cep) {
-		return new ResponseEntity<>(cepRestService.findUserByCepFromViaCep(cep), HttpStatus.OK);
-		
-	}
-	
 	
 }

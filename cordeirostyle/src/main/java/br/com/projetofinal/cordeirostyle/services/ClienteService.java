@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
+import br.com.projetofinal.cordeirostyle.dtos.EnderecoDto;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
@@ -68,7 +69,8 @@ public class ClienteService {
 		Cliente clienteSalvo = clienteRepository.save(cliente);
 		ClienteDto clienteSalvoDto = modelMapper.map(clienteSalvo, ClienteDto.class);
 
-		Endereco endereco = enderecoService.findById(clienteDto.getEndereco().getId_endereco());
+		EnderecoDto enderecoDto = enderecoService.findById(clienteDto.getEndereco().getId_endereco());
+		Endereco endereco = modelMapper.map(enderecoDto, Endereco.class);
 		EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
 		clienteSalvoDto.setEnderecoDto(enderecoDtoRetorno);
 
@@ -80,7 +82,8 @@ public class ClienteService {
 				.orElseThrow(() -> new NoSuchElementException("Cliente com id correspondente não encontrado!"));
 		ClienteDto clienteDtoAtualizado = null;
 		if (clienteAtualizado != null) {
-			Endereco endereco = enderecoService.findById(novoclienteDto.getEndereco().getId_endereco());
+			EnderecoDto enderecoDto = enderecoService.findById(novoclienteDto.getEndereco().getId_endereco());
+			Endereco endereco = modelMapper.map(enderecoDto, Endereco.class);
 			EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
 
 			clienteAtualizado.setNome_completo(novoclienteDto.getNome_completo());
