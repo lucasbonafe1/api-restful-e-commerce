@@ -19,6 +19,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -34,6 +35,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	ObjectMapper objectMapper;
 	
+	@ExceptionHandler(HttpClientErrorException.class)
+	public ResponseEntity<?> HandleHttpClientErrorException(HttpClientErrorException exception,
+			WebRequest request) {
+
+		ProblemDetail pd = ProblemDetail
+		        .forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Cep informado inválido, error: '" 
+		        	+ exception.getLocalizedMessage());
+		    pd.setType(URI.create("http://localhost:8080/errors/internal-server-error"));
+		    pd.setTitle("Erro Interno");
+		    pd.setProperty("hostname", "localhost");
+		    return ResponseEntity.status(500).body(pd);
+		}
+	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException exception,
 			WebRequest request) {
@@ -45,7 +59,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		    pd.setTitle("Erro Interno");
 		    pd.setProperty("hostname", "localhost");
 		    return ResponseEntity.status(500).body(pd);
-	
 		}
 	
 	@ExceptionHandler(NoSuchElementException.class)
