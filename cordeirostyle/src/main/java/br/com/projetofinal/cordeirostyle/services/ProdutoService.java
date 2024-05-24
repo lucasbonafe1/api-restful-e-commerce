@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.projetofinal.cordeirostyle.dtos.CategoriaDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
@@ -54,10 +55,13 @@ public class ProdutoService {
 		return produtoDto;
 	}
 	
-	public ProdutoDtoRetorno save(@RequestBody ProdutoDto produtoDto){
+	public ProdutoDto save(@RequestBody ProdutoDto produtoDto){
 		Produto produto = modelMapper.map(produtoDto, Produto.class);
 		Produto produtoSalvo = produtoRepository.save(produto);
-		ProdutoDtoRetorno produtoRetorno = modelMapper.map(produtoSalvo, ProdutoDtoRetorno.class);
+		ProdutoDto produtoRetorno = modelMapper.map(produtoSalvo, ProdutoDto.class);
+		CategoriaDtoRetorno categoriaDtoRetorno = modelMapper.map(categoriaRepository.findById(produtoDto.getCategoria().getId_categoria()).orElseThrow(()-> new NoSuchElementException("Categoria não encontrada!")), CategoriaDtoRetorno.class);
+		produtoRetorno.setCategoria(categoriaDtoRetorno);
+		
 		return produtoRetorno;
 	}
 	
@@ -70,7 +74,7 @@ public class ProdutoService {
 				produtoAtualizado.setQtd_estoque(produtoNovoDto.getQtd_estoque());
 				produtoAtualizado.setValor_unitario(produtoNovoDto.getValor_unitario());
 				produtoAtualizado.setData_cadastro(produtoNovoDto.getData_cadastro());
-				produtoAtualizado.setCategoria(categoriaRepository.findById(produtoNovoDto.getCategoria().getId_categoria()).orElseThrow(() -> new NoSuchElementException("Categoria não encontrado!")));
+				produtoAtualizado.setCategoria(categoriaRepository.findById(produtoNovoDto.getCategoria().getId_categoria()).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!")));
 				produtoDtoAtualizado = modelMapper.map(produtoAtualizado, ProdutoDto.class);
 				
 				produtoRepository.save(produtoAtualizado);
