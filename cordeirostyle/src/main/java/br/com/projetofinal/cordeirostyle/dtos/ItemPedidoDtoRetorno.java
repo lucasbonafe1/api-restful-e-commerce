@@ -9,7 +9,7 @@ public class ItemPedidoDtoRetorno {
 	private double percentual_desconto;
 	private double valor_bruto;
 	private double valor_liquido;
-	private ProdutoDto produtoDto; // rever
+	private ProdutoDto produtoDto;
 
 	public Integer getQuantidade() {
 		return quantidade;
