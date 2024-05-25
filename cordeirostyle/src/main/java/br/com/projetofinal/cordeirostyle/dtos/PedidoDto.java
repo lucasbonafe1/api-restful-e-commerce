@@ -54,7 +54,8 @@ public class PedidoDto {
 	}
 
 	public Double getValor_total() {
-		return valor_total;
+		return 
+				valor_total;
 	}
 
 	public void setValor_total(Double valor_total) {

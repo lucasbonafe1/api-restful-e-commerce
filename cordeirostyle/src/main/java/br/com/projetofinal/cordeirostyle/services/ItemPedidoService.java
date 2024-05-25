@@ -21,23 +21,28 @@ public class ItemPedidoService {
 
 	@Autowired
 	ModelMapper modelMapper;
-
 	public List<ItemPedidoDto> findAll() {
-		List<ItemPedido> items = itemPedidoRepository.findAll();
-		List<ItemPedidoDto> itemsDto = new ArrayList<>();
+	    List<ItemPedido> items = itemPedidoRepository.findAll();
+	    List<ItemPedidoDto> itemsDto = new ArrayList<>();
 
-		if (items.isEmpty()) {
-			throw new NoSuchElementException("Não há items pedidos registrados!");
-		}
-		for (ItemPedido item : items) {
-			ItemPedidoDto itemTransformado = modelMapper.map(item, ItemPedidoDto.class);
-			ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
-			itemTransformado.setProdutoDto(produtoDtoRetorno);
-			
+	    if (items.isEmpty()) {
+	        throw new NoSuchElementException("Não há items pedidos registrados!");
+	    }
+	    for (ItemPedido item : items) {
+	        ItemPedidoDto itemTransformado = modelMapper.map(item, ItemPedidoDto.class);
+
+	        if (item.getProduto() != null) {
+	            ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
+	            itemTransformado.setProdutoDto(produtoDtoRetorno);
+	        } else {
+	            System.out.println("Esse produto é nulo: " + item.getProduto()); 
+	        }
+	        
 	        itemsDto.add(itemTransformado);
-		}
-		return itemsDto;
+	    }
+	    return itemsDto;
 	}
+
 
 	public ItemPedidoDto findById(Integer id) {
 		ItemPedido item = itemPedidoRepository.findById(id)

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
+import br.com.projetofinal.cordeirostyle.dtos.RelatorioPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.entities.Pedido;
 import br.com.projetofinal.cordeirostyle.repositories.PedidoRepository;
@@ -22,6 +23,9 @@ public class PedidoService {
 	
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	EmailService emailService;
 
 	public List<PedidoDto> findAll() throws NoSuchElementException {
 	    List<Pedido> pedidos = pedidoRepository.findAll();
@@ -47,7 +51,7 @@ public class PedidoService {
 	        pedidoTransformado.setItens(itensDto);
 	        pedidoDtoList.add(pedidoTransformado);
 	    }
-	    return pedidoDtoList;
+		return pedidoDtoList;
 	}
 
 
@@ -68,14 +72,18 @@ public class PedidoService {
 		
 		pedidoDto = modelMapper.map(pedido, PedidoDto.class);
 		pedidoDto.setItens(itensDto);
-		
-		return pedidoDto;
+	
+	    return pedidoDto;
 	}
 
 	public PedidoDto save(PedidoDto pedidoDto) {
 	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
 	    Pedido pedidoSalvo = pedidoRepository.save(pedido);
 	    PedidoDto pedidoSalvoDto = modelMapper.map(pedidoSalvo, PedidoDto.class);
+	    RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoSalvo, RelatorioPedidoDto.class);
+	    
+		
+		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
 	    return pedidoSalvoDto;
 	}
 
