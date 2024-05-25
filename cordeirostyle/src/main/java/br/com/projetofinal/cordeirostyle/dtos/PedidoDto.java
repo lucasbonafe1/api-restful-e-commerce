@@ -1,16 +1,25 @@
 package br.com.projetofinal.cordeirostyle.dtos;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PedidoDto {
-
+	private Integer id_pedido;
 	private LocalDate data_pedido;
 	private LocalDate data_entrega;
 	private LocalDate data_envio;
 	private Boolean status;
 	private Double valor_total;
-	private ClienteDto cliente;
-	private ItemPedidoDto itens;
+	private List<ItemPedidoDto> itens;
+	private ClienteDtoRetorno cliente;
+	
+	public Integer getId_pedido() {
+		return id_pedido;
+	}
+
+	public void setId_pedido(Integer id_pedido) {
+		this.id_pedido = id_pedido;
+	}
 
 	public LocalDate getData_pedido() {
 		return data_pedido;
@@ -52,19 +61,19 @@ public class PedidoDto {
 		this.valor_total = valor_total;
 	}
 	
-	public ClienteDto getCliente() {
+	public void setCliente(ClienteDtoRetorno cliente) {
+		this.cliente = cliente;
+	}
+
+	public ClienteDtoRetorno getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(ClienteDto cliente) {
-		this.cliente = cliente;
-	}	
-	
-	public ItemPedidoDto getItens() {
+	public List<ItemPedidoDto> getItens() {
 		return itens;
 	}
 
-	public void setItens(ItemPedidoDto itens) {
+	public void setItens(List<ItemPedidoDto> itens) {
 		this.itens = itens;
 	}
 
