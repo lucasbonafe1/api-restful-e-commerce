@@ -123,13 +123,12 @@ public class ProdutoService {
 		return produtoDtoDeletado;
 	}
 	
-	public Imagem getImagem(Integer id) {
-		Optional<Produto> produto = produtoRepository.findById(id);
-		if (produto.isPresent()) {
-			return produto.get().getImagem();
-		}
-		return null;
-	}
-
+	public Imagem getImagem(Integer id) throws NoSuchElementException{
+        Optional<Produto> produto = produtoRepository.findById(id);
+        if (produto.isPresent()) {
+            return produto.get().getImagem();
+        }
+        throw new NoSuchElementException("Este produto não existe ou não possui imagem!");
+    }
 	
 }
