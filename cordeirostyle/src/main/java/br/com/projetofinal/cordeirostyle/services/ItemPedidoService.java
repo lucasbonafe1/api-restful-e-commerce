@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.repositories.ItemPedidoRepository;
@@ -18,6 +19,9 @@ import br.com.projetofinal.cordeirostyle.repositories.ItemPedidoRepository;
 public class ItemPedidoService {
 	@Autowired
 	ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	ProdutoService produtoService;
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -60,6 +64,10 @@ public class ItemPedidoService {
 		ItemPedido item = modelMapper.map(itemPedidoDto, ItemPedido.class);
 		ItemPedido itemSalvo = itemPedidoRepository.save(item);
 		ItemPedidoDtoRetorno itemRetorno = modelMapper.map(itemSalvo, ItemPedidoDtoRetorno.class);
+		
+		ProdutoDto produtoDtoRetorno = produtoService.findById(itemPedidoDto.getProduto().getId_produto());
+		itemRetorno.setProdutoDto(produtoDtoRetorno);
+		
 		return itemRetorno;
 	}
 
@@ -72,6 +80,10 @@ public class ItemPedidoService {
 				itemPedidoAtualizado.setPreco_venda(novoItemPedidoDto.getPreco_venda());
 				itemPedidoAtualizado.setQuantidade(novoItemPedidoDto.getQuantidade());
 				itemDtoAtualizado = modelMapper.map(itemPedidoAtualizado, ItemPedidoDtoRetorno.class);
+				
+				ProdutoDto produtoDtoRetorno = produtoService.findById(novoItemPedidoDto.getProduto().getId_produto());
+				itemDtoAtualizado.setProdutoDto(produtoDtoRetorno);
+				
 				itemPedidoRepository.save(itemPedidoAtualizado);
 		}
 		return itemDtoAtualizado;
