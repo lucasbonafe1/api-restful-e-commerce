@@ -58,7 +58,6 @@ public class PedidoService {
 	public PedidoDto findById(Integer id) {
 		Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Pedido não encontrado!"));
 		PedidoDto pedidoDto = null;
-		
 		List<ItemPedido> itensPedidos = pedido.getItensPedidos();
 		List<ItemPedidoDto> itensDto = new ArrayList<>();
 				
@@ -72,9 +71,9 @@ public class PedidoService {
 		
 		pedidoDto = modelMapper.map(pedido, PedidoDto.class);
 		pedidoDto.setItens(itensDto);
-	
-	    return pedidoDto;
+		return pedidoDto;
 	}
+		
 
 	public PedidoDto save(PedidoDto pedidoDto) {
 	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
@@ -84,6 +83,7 @@ public class PedidoService {
 	    
 		
 		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
+
 	    return pedidoSalvoDto;
 	}
 
