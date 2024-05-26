@@ -88,7 +88,7 @@ public class PedidoService {
 	}
 
 	public PedidoDto update(Integer id, PedidoDto pedido) {
-		Pedido pedidoAtualizado = pedidoRepository.findById(id).orElse(null);
+		Pedido pedidoAtualizado = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Id do pedido não encontrado!"));
 		PedidoDto pedidoDtoAtualizado = null;
 		if (pedidoAtualizado != null) {
 				pedidoAtualizado.setData_entrega(pedido.getData_entrega());
