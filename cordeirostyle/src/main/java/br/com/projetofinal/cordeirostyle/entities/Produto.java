@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @JsonIdentityInfo(
@@ -42,24 +45,25 @@ public class Produto {
 	private int qtd_estoque;
 	
 	@Column(name = "data_cadastro")
-	private LocalDate data_cadastro = LocalDate.now();
+	private LocalDate data_cadastro;
 	
 	@Column(name = "valor_unitario")
 	private double valor_unitario;
-	
-	@Column(name = "imagem")
-	private byte[] imagem;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_imagem")
+	private Imagem imagem;
 
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
-	 @JsonIgnore // Adicione esta anotação para ignorar a serialização da lista itensPedidos
-	    @OneToMany(mappedBy = "produto")
-	    private List<ItemPedido> itensPedidos;
+	 @JsonIgnore
+	 @OneToMany(mappedBy = "produto")
+	 private List<ItemPedido> itensPedidos;
 
 	public Produto(String nome, String descricao, int qtd_estoque,double valor_unitario,
-			byte[] imagem,Categoria categoria
+			Imagem imagem,Categoria categoria
 			) 
 	{
 		this.nome = nome;
@@ -116,14 +120,13 @@ public class Produto {
 		this.valor_unitario = valor_unitario;
 	}
 
-	public byte[] getImagem() {
+	public Imagem getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(byte[] imagem) {
+	public void setImagem(Imagem imagem) {
 		this.imagem = imagem;
 	}
-
 
 	public Categoria getCategoria() {
 		return categoria;

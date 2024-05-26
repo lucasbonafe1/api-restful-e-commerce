@@ -9,8 +9,9 @@ public class ProdutoDto {
 	private String descricao;
 	private double valor_unitario;
 	private Integer qtd_estoque;
-	private LocalDate data_cadastro;
+	private LocalDate data_cadastro = LocalDate.now();
 	private CategoriaDtoRetorno categoria;
+	
 
 	public String getNome() {
 		return nome;
@@ -68,6 +69,7 @@ public class ProdutoDto {
 	public void setData_cadastro(LocalDate data_cadastro) {
 		this.data_cadastro = data_cadastro;
 	}
+
 
 	@Override
 	public String toString() {
