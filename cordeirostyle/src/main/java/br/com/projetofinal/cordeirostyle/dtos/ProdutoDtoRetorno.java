@@ -8,31 +8,24 @@ public class ProdutoDtoRetorno {
 	private String nome;
 	private String descricao;
 	private double valor_unitario;
-	private Integer qtd_estoque;
 	private LocalDate data_cadastro;
+	private CategoriaDtoRetorno categoria;
+	private ImagemDtoRetorno imagem;
 
-	public String getNome() {
-		return nome;
+	public ProdutoDtoRetorno() {
+		super();
 	}
-	
-	public void setNome(String nome) {
+
+	public ProdutoDtoRetorno(Integer id_produto, String nome, String descricao, double valor_unitario,
+			LocalDate data_cadastro, CategoriaDtoRetorno categoria, ImagemDtoRetorno imagem) {
+		super();
+		this.id_produto = id_produto;
 		this.nome = nome;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-	
-	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-	
-	public double getValor_unitario() {
-		return valor_unitario;
-	}
-
-	public void setValor_unitario(double valor_unitario) {
 		this.valor_unitario = valor_unitario;
+		this.data_cadastro = data_cadastro;
+		this.categoria = categoria;
+		this.imagem = imagem;
 	}
 
 	public Integer getId_produto() {
@@ -43,12 +36,28 @@ public class ProdutoDtoRetorno {
 		this.id_produto = id_produto;
 	}
 
-	public Integer getQtd_estoque() {
-		return qtd_estoque;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setQtd_estoque(Integer qtd_estoque) {
-		this.qtd_estoque = qtd_estoque;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public double getValor_unitario() {
+		return valor_unitario;
+	}
+
+	public void setValor_unitario(double valor_unitario) {
+		this.valor_unitario = valor_unitario;
 	}
 
 	public LocalDate getData_cadastro() {
@@ -59,10 +68,27 @@ public class ProdutoDtoRetorno {
 		this.data_cadastro = data_cadastro;
 	}
 
+	public CategoriaDtoRetorno getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDtoRetorno categoria) {
+		this.categoria = categoria;
+	}
+
+	public ImagemDtoRetorno getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(ImagemDtoRetorno imagem) {
+		this.imagem = imagem;
+	}
+
 	@Override
 	public String toString() {
-		return "ProdutoDto [nome=" + nome + ", descricao=" + descricao + ", valor_unitario=" + valor_unitario
+		return "ProdutoDtoRetorno [id_produto=" + id_produto + ", nome=" + nome + ", descricao=" + descricao
+				+ ", valor_unitario=" + valor_unitario + ", data_cadastro=" + data_cadastro + ", categoria=" + categoria
 				+ "]";
 	}
-	
+
 }

@@ -10,6 +10,23 @@ public class ItemPedidoDtoRetorno {
 	private double valor_bruto;
 	private double valor_liquido;
 	private ProdutoDto produto;
+	
+
+	public ItemPedidoDtoRetorno() {
+		super();
+	}
+
+	public ItemPedidoDtoRetorno(Integer id_item_pedido, Integer quantidade, double preco_venda,
+			double percentual_desconto, double valor_bruto, double valor_liquido, ProdutoDto produto) {
+		super();
+		this.id_item_pedido = id_item_pedido;
+		this.quantidade = quantidade;
+		this.preco_venda = preco_venda;
+		this.percentual_desconto = percentual_desconto;
+		this.valor_bruto = valor_bruto;
+		this.valor_liquido = valor_liquido;
+		this.produto = produto;
+	}
 
 	public Integer getQuantidade() {
 		return quantidade;

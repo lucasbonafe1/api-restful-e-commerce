@@ -13,6 +13,23 @@ public class PedidoDto {
 	private List<ItemPedidoDto> itens;
 	private ClienteDtoRetorno cliente;
 	
+	public PedidoDto() {
+		super();
+	}
+
+	public PedidoDto(Integer id_pedido, LocalDate data_pedido, LocalDate data_entrega, LocalDate data_envio,
+			Boolean status, Double valor_total, List<ItemPedidoDto> itens, ClienteDtoRetorno cliente) {
+		super();
+		this.id_pedido = id_pedido;
+		this.data_pedido = data_pedido;
+		this.data_entrega = data_entrega;
+		this.data_envio = data_envio;
+		this.status = status;
+		this.valor_total = valor_total;
+		this.itens = itens;
+		this.cliente = cliente;
+	}
+
 	public Integer getId_pedido() {
 		return id_pedido;
 	}
@@ -54,8 +71,7 @@ public class PedidoDto {
 	}
 
 	public Double getValor_total() {
-		return 
-				valor_total;
+		return valor_total;
 	}
 
 	public void setValor_total(Double valor_total) {
