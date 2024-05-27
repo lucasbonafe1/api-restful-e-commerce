@@ -96,7 +96,7 @@ public class PedidoService {
 		return pedidoDto;
 	}
 		
-
+	@Transactional
 	public PedidoDto save(PedidoDto pedidoDto) {
 	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
 	    Pedido pedidoSalvo = pedidoRepository.save(pedido);
@@ -109,6 +109,7 @@ public class PedidoService {
 	    return pedidoSalvoDto;
 	}
 
+	@Transactional
 	public PedidoDto update(Integer id, PedidoDto pedido) {
 		Pedido pedidoAtualizado = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Id do pedido não encontrado!"));
 		PedidoDto pedidoDtoAtualizado = null;
