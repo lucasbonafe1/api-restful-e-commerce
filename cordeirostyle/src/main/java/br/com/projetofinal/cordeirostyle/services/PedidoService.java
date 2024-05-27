@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
+import br.com.projetofinal.cordeirostyle.dtos.PedidoDtoRetorno;
+import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.RelatorioPedidoDto;
-import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.entities.Pedido;
@@ -32,51 +34,55 @@ public class PedidoService {
 	EmailService emailService;
 
 	@Transactional
-	public List<PedidoDto> findAll() throws NoSuchElementException {
+	public List<PedidoDtoRetorno> findAll() throws NoSuchElementException {
 	    List<Pedido> pedidos = pedidoRepository.findAll();
-	    List<PedidoDto> pedidosDto = new ArrayList<>();	  
+	    List<PedidoDtoRetorno> pedidosDto = new ArrayList<>();
 	    
 	    for (Pedido pedido : pedidos) {
-			PedidoDto pedidoDto = modelMapper.map(pedido, PedidoDto.class);
-			
+			PedidoDtoRetorno pedidoDto = modelMapper.map(pedido, PedidoDtoRetorno.class);
+		
 			List<ItemPedido> itensPedidos = pedido.getItensPedidos();
-			List<ItemPedidoDto> itensDto = new ArrayList<>();
+			List<ItemPedidoDtoRetorno> itensPedidosDto = new ArrayList<>(); 
+
+				for(ItemPedido item : itensPedidos) {
+		        	ProdutoDto produtoDto = modelMapper.map(item.getProduto(), ProdutoDto.class);
 					
-			for(ItemPedido item : itensPedidos) {
-	        	ItemPedidoDto itemPedidoDto = modelMapper.map(item, ItemPedidoDto.class);
-	        	ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
-	        	itemPedidoDto.setProdutoDto(produtoDtoRetorno);
-	        	
-				itensDto.add(itemPedidoDto);
-			}
-			
+		        	ItemPedidoDtoRetorno itemPedidoDto = modelMapper.map(item, ItemPedidoDtoRetorno.class);
+		        	itemPedidoDto.setProdutoDto(produtoDto);
+		        	
+		        	itensPedidosDto.add(itemPedidoDto);
+				}
+
 			Endereco endereco = pedido.getCliente().getEndereco();
 			
-			EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
-			pedidoDto.getCliente().setEnderecoDtoRetorno(enderecoDtoRetorno);
+			if(endereco != null) {
+				EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
+				pedidoDto.getCliente().setEnderecoDtoRetorno(enderecoDtoRetorno);
+			}
+			pedidoDto.setItens(itensPedidosDto);
 			
-			pedidoDto.setItens(itensDto);
 			pedidosDto.add(pedidoDto);
 	    }
-	    
 		return pedidosDto;
 	}
 
 	@Transactional
-	public PedidoDto findById(Integer id) {
+	public PedidoDtoRetorno findById(Integer id) {
 		Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Pedido não encontrado!"));
-		PedidoDto pedidoDto = new PedidoDto();
+		PedidoDtoRetorno pedidoDto = new PedidoDtoRetorno();
+		pedidoDto = modelMapper.map(pedido, PedidoDtoRetorno.class);
+		
 		List<ItemPedido> itensPedidos = pedido.getItensPedidos();
-		List<ItemPedidoDto> itensDto = new ArrayList<>();
+		List<ItemPedidoDtoRetorno> itensDto = new ArrayList<>();
 				
 		for(ItemPedido item : itensPedidos) {
-        	ItemPedidoDto itemPedidoDto = modelMapper.map(item, ItemPedidoDto.class);
-        	ProdutoDtoRetorno produtoDtoRetorno = modelMapper.map(item.getProduto(), ProdutoDtoRetorno.class);
-        	itemPedidoDto.setProdutoDto(produtoDtoRetorno);
+			ProdutoDto produtoDto = modelMapper.map(item.getProduto(), ProdutoDto.class);
+			
+			ItemPedidoDtoRetorno itemPedidoDto = modelMapper.map(item, ItemPedidoDtoRetorno.class);
+        	itemPedidoDto.setProdutoDto(produtoDto);
         	
 			itensDto.add(itemPedidoDto);
 		}
-		pedidoDto = modelMapper.map(pedido, PedidoDto.class);
 		
 		Endereco endereco = pedido.getCliente().getEndereco();
 		EnderecoDtoRetorno enderecoDtoRetorno = modelMapper.map(endereco, EnderecoDtoRetorno.class);
@@ -84,8 +90,8 @@ public class PedidoService {
 		
 		pedidoDto.setItens(itensDto);
 		
-		RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDto, RelatorioPedidoDto.class);
-		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
+//		RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDto, RelatorioPedidoDto.class);
+//		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
 		
 		return pedidoDto;
 	}

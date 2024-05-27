@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
-import br.com.projetofinal.cordeirostyle.entities.Pedido;
+import br.com.projetofinal.cordeirostyle.dtos.PedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.services.PedidoService;
 
 
@@ -27,13 +27,13 @@ public class PedidoController {
 	PedidoService pedidoService;
 	
 	@GetMapping
-	public ResponseEntity<List<PedidoDto>> findAll() {
+	public ResponseEntity<List<?>> findAll() {
 		return new ResponseEntity<>(pedidoService.findAll(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<PedidoDto> findById(@PathVariable Integer id){
-		PedidoDto pedidoEncontrado = pedidoService.findById(id);
+	public ResponseEntity<?> findById(@PathVariable Integer id){
+		PedidoDtoRetorno pedidoEncontrado = pedidoService.findById(id);
 		if (pedidoEncontrado == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -55,8 +55,8 @@ public class PedidoController {
     }
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<PedidoDto> deleteById(@PathVariable Integer id) {
-		PedidoDto pedidoDeletado = pedidoService.findById(id);
+	public ResponseEntity<?> deleteById(@PathVariable Integer id) {
+		PedidoDtoRetorno pedidoDeletado = pedidoService.findById(id);
 
 		if (pedidoDeletado == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

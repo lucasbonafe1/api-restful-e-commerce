@@ -9,10 +9,10 @@ public class RelatorioPedidoDto {
 	private LocalDate data_pedido;
 	private Double valor_total;
 	
-	private Integer id_item_pedido;
+	private int id_item_pedido;
 	private String produto;
 	private double preco_venda;
-	private Integer quantidade;
+	private int quantidade;
 	private double percentual_desconto;
 	private double valor_bruto;
 	private double valor_liquido;
@@ -41,11 +41,11 @@ public class RelatorioPedidoDto {
 		this.valor_total = valor_total;
 	}
 
-	public Integer getId_item_pedido() {
+	public int getId_item_pedido() {
 		return id_item_pedido;
 	}
 
-	public void setId_item_pedido(Integer id_item_pedido) {
+	public void setId_item_pedido(int id_item_pedido) {
 		this.id_item_pedido = id_item_pedido;
 	}
 
@@ -65,11 +65,11 @@ public class RelatorioPedidoDto {
 		this.preco_venda = preco_venda;
 	}
 
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 

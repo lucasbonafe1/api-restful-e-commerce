@@ -3,22 +3,25 @@ package br.com.projetofinal.cordeirostyle.dtos;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.com.projetofinal.cordeirostyle.entities.Cliente;
+import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
+
 public class PedidoDto {
 	private Integer id_pedido;
 	private LocalDate data_pedido;
 	private LocalDate data_entrega;
 	private LocalDate data_envio;
 	private Boolean status;
-	private Double valor_total;
-	private ClienteDtoRetorno cliente;
-	private List<ItemPedidoDto> itens;
+	private double valor_total;
+	private Cliente cliente;
+	private List<ItemPedido> itens;
 	
 	public PedidoDto() {
 		super();
 	}
 
 	public PedidoDto(Integer id_pedido, LocalDate data_pedido, LocalDate data_entrega, LocalDate data_envio,
-			Boolean status, Double valor_total, List<ItemPedidoDto> itens, ClienteDtoRetorno cliente) {
+			Boolean status, double valor_total, List<ItemPedido> itens, Cliente cliente) {
 		super();
 		this.id_pedido = id_pedido;
 		this.data_pedido = data_pedido;
@@ -70,27 +73,27 @@ public class PedidoDto {
 		this.status = status;
 	}
 
-	public Double getValor_total() {
+	public double getValor_total() {
 		return valor_total;
 	}
 
-	public void setValor_total(Double valor_total) {
+	public void setValor_total(double valor_total) {
 		this.valor_total = valor_total;
 	}
 	
-	public void setCliente(ClienteDtoRetorno cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
-	public ClienteDtoRetorno getCliente() {
+	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public List<ItemPedidoDto> getItens() {
+	public List<ItemPedido> getItens() {
 		return itens;
 	}
 
-	public void setItens(List<ItemPedidoDto> itens) {
+	public void setItens(List<ItemPedido> itens) {
 		this.itens = itens;
 	}
 

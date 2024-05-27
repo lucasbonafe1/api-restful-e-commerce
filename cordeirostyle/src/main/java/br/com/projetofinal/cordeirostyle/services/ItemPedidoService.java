@@ -65,7 +65,7 @@ public class ItemPedidoService {
 		ItemPedido itemSalvo = itemPedidoRepository.save(item);
 		ItemPedidoDtoRetorno itemRetorno = modelMapper.map(itemSalvo, ItemPedidoDtoRetorno.class);
 		
-		ProdutoDto produtoDtoRetorno = produtoService.findById(itemPedidoDto.getProduto().getId_produto());
+		ProdutoDto produtoDtoRetorno = produtoService.findById(item.getProduto().getId_produto());
 		itemRetorno.setProdutoDto(produtoDtoRetorno);
 		
 		return itemRetorno;

@@ -3,18 +3,19 @@ package br.com.projetofinal.cordeirostyle.dtos;
 public class ItemPedidoDto {
 
 	private Integer id_item_pedido;
-	private Integer quantidade;
+	private int quantidade;
 	private double preco_venda;
 	private double percentual_desconto;
 	private double valor_bruto;
 	private double valor_liquido;
+	private PedidoDtoRetorno pedido;
 	private ProdutoDtoRetorno produto;
 
 	public ItemPedidoDto() {
 		super();
 	}
 
-	public ItemPedidoDto(Integer id_item_pedido, Integer quantidade, double preco_venda, double percentual_desconto,
+	public ItemPedidoDto(Integer id_item_pedido, int quantidade, double preco_venda, double percentual_desconto,
 			double valor_bruto, double valor_liquido, ProdutoDtoRetorno produto) {
 		super();
 		this.id_item_pedido = id_item_pedido;
@@ -26,11 +27,11 @@ public class ItemPedidoDto {
 		this.produto = produto;
 	}
 
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 
@@ -80,6 +81,14 @@ public class ItemPedidoDto {
 
 	public void setId_item_pedido(Integer id_item_pedido) {
 		this.id_item_pedido = id_item_pedido;
+	}
+
+	public PedidoDtoRetorno getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(PedidoDtoRetorno pedido) {
+		this.pedido = pedido;
 	}
 	
 	

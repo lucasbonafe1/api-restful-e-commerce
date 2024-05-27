@@ -8,7 +8,7 @@ public class ProdutoDto {
 	private String nome;
 	private String descricao;
 	private double valor_unitario;
-	private Integer qtd_estoque;
+	private int qtd_estoque;
 	private LocalDate data_cadastro = LocalDate.now();
 	private CategoriaDtoRetorno categoria;
 	
@@ -53,11 +53,11 @@ public class ProdutoDto {
 		this.id_produto = id_produto;
 	}
 
-	public Integer getQtd_estoque() {
+	public int getQtd_estoque() {
 		return qtd_estoque;
 	}
 
-	public void setQtd_estoque(Integer qtd_estoque) {
+	public void setQtd_estoque(int qtd_estoque) {
 		this.qtd_estoque = qtd_estoque;
 	}
 	

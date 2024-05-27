@@ -4,7 +4,7 @@ public class ItemPedidoDtoRetorno {
 	
 	
 	private Integer id_item_pedido;
-	private Integer quantidade;
+	private int quantidade;
 	private double preco_venda;
 	private double percentual_desconto;
 	private double valor_bruto;
@@ -16,7 +16,7 @@ public class ItemPedidoDtoRetorno {
 		super();
 	}
 
-	public ItemPedidoDtoRetorno(Integer id_item_pedido, Integer quantidade, double preco_venda,
+	public ItemPedidoDtoRetorno(Integer id_item_pedido, int quantidade, double preco_venda,
 			double percentual_desconto, double valor_bruto, double valor_liquido, ProdutoDto produto) {
 		super();
 		this.id_item_pedido = id_item_pedido;
@@ -28,11 +28,11 @@ public class ItemPedidoDtoRetorno {
 		this.produto = produto;
 	}
 
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 
