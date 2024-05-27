@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
+import br.com.projetofinal.cordeirostyle.entities.Pedido;
 import br.com.projetofinal.cordeirostyle.services.PedidoService;
 
 

@@ -9,8 +9,8 @@ public class ProdutoDtoRetorno {
 	private String descricao;
 	private double valor_unitario;
 	private LocalDate data_cadastro;
-	private CategoriaDtoRetorno categoria;
 	private ImagemDtoRetorno imagem;
+	private CategoriaDtoRetorno categoria;
 
 	public ProdutoDtoRetorno() {
 		super();

@@ -10,8 +10,8 @@ public class PedidoDto {
 	private LocalDate data_envio;
 	private Boolean status;
 	private Double valor_total;
-	private List<ItemPedidoDto> itens;
 	private ClienteDtoRetorno cliente;
+	private List<ItemPedidoDto> itens;
 	
 	public PedidoDto() {
 		super();
