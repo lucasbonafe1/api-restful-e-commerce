@@ -93,9 +93,6 @@ public class PedidoService {
 		pedidoDto.getCliente().setEnderecoDtoRetorno(enderecoDtoRetorno);
 		
 		pedidoDto.setItens(itensDto);
-
-		RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDto, RelatorioPedidoDto.class);	
-		emailService.enviarEmail(pedido.getCliente().getEmail(), "-- Relatorio do seu pedido --", relatorioPedidoDto.toString());
 		
 		return pedidoDto;
 	}
@@ -114,9 +111,9 @@ public class PedidoService {
 	}
 
 	@Transactional
-	public PedidoDto update(Integer id, PedidoDto pedido) {
+	public PedidoDtoRetorno update(Integer id, PedidoDto pedido) {
 		Pedido pedidoAtualizado = pedidoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Id do pedido não encontrado!"));
-		PedidoDto pedidoDtoAtualizado = null;
+		PedidoDtoRetorno pedidoDtoAtualizado = null;
 		if (pedidoAtualizado != null) {
 				pedidoAtualizado.setData_entrega(pedido.getData_entrega());
 				pedidoAtualizado.setData_envio(pedido.getData_envio());
@@ -124,10 +121,31 @@ public class PedidoService {
 				pedidoAtualizado.setValor_total(pedido.getValor_total());
 				
 				ClienteDto clienteDto = clienteService.findById(pedido.getCliente().getId_cliente());
-				Cliente cliente = modelMapper.map(clienteDto, Cliente.class);
+				ClienteDtoRetorno cliente = modelMapper.map(clienteDto, ClienteDtoRetorno.class);
 				
-				pedidoDtoAtualizado = modelMapper.map(pedidoAtualizado, PedidoDto.class);
+				List<ItemPedido> itensPedidos = pedidoAtualizado.getItensPedidos();
+				List<ItemPedidoDtoRetorno> itensDto = new ArrayList<>();
+						
+				for(ItemPedido item : itensPedidos) {
+					ProdutoDto produtoDto = modelMapper.map(item.getProduto(), ProdutoDto.class);
+					
+					ItemPedidoDtoRetorno itemPedidoDto = modelMapper.map(item, ItemPedidoDtoRetorno.class);
+		        	itemPedidoDto.setProdutoDto(produtoDto);
+		        	
+					itensDto.add(itemPedidoDto);
+				}
+				
+				pedidoDtoAtualizado = modelMapper.map(pedidoAtualizado, PedidoDtoRetorno.class);
+				pedidoDtoAtualizado.setCliente(cliente);
+				pedidoDtoAtualizado.setItens(itensDto);
+				
 				pedidoRepository.save(pedidoAtualizado);
+				
+				if(pedidoDtoAtualizado.getStatus() == true) {
+					RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDtoAtualizado, RelatorioPedidoDto.class);	
+					emailService.enviarEmail(pedidoDtoAtualizado.getCliente().getEmail(), "-- Relatorio do seu pedido --", relatorioPedidoDto.toString());
+				}
+				
 		}
 		
 		return pedidoDtoAtualizado;
