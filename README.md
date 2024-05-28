@@ -2,10 +2,10 @@
 CordeiroStyle E-Commerce - Trabalho final API RESTful do Serratec
 
 ## Alunos
-- Lucas Bonafé
-- Khezak Kalleb
-- Lucas Boek
-- Lucas Amorim Rodrigues
+- Lucas Bonafé - https://www.linkedin.com/in/lucas-bonaf%C3%A9/
+- Khezak Khalleb - https://www.linkedin.com/in/khezac/
+- Lucas Boeck - https://www.linkedin.com/in/lucas-boeck-497a69180/
+- Lucas Amorim Rodrigues - https://www.linkedin.com/in/lucas-rodrigues-928419110/
 
 ## Sobre:
 Este trabalho tem como objetivo desenvolver uma API RESTful para um e-commerce, seguindo as regras de negócio e requisitos especificados. A API permite gerenciar pedidos, produtos e clientes, oferecendo funcionalidades essenciais para o funcionamento de um sistema de comércio eletrônico.
