@@ -3,7 +3,7 @@ CordeiroStyle E-Commerce - Trabalho final API RESTful do Serratec
 
 ## Alunos
 - Lucas Bonafé - https://www.linkedin.com/in/lucas-bonaf%C3%A9/
-- Khezak Khalleb - https://www.linkedin.com/in/khezac/
+- Khezac Khalleb - https://www.linkedin.com/in/khezac/
 - Lucas Boeck - https://www.linkedin.com/in/lucas-boeck-497a69180/
 - Lucas Amorim Rodrigues - https://www.linkedin.com/in/lucas-rodrigues-928419110/
 
