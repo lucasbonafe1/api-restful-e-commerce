@@ -41,7 +41,7 @@ public class PedidoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<PedidoDto> save(@RequestBody PedidoDto pedido) {
+	public ResponseEntity<PedidoDtoRetorno> save(@RequestBody PedidoDto pedido) {
 		return new ResponseEntity<>(pedidoService.save(pedido), HttpStatus.CREATED) ;
 	}
 	

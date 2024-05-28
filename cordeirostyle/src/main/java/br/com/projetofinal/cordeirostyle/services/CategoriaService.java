@@ -14,6 +14,7 @@ import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.entities.Categoria;
 import br.com.projetofinal.cordeirostyle.entities.Produto;
 import br.com.projetofinal.cordeirostyle.repositories.CategoriaRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CategoriaService {
@@ -23,6 +24,7 @@ public class CategoriaService {
 	@Autowired
 	ModelMapper modelMapper;
 
+	@Transactional
 	public List<CategoriaDto> findAll() throws NoSuchElementException{
 		List<Categoria> categorias = categoriaRepository.findAll();
 		List<CategoriaDto> categoriasDto = new ArrayList<>();
@@ -47,6 +49,7 @@ public class CategoriaService {
 		return categoriasDto;
 	}
 
+	@Transactional
 	public CategoriaDto findById(Integer id) {
 		Categoria categoria = categoriaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Categoria não encontrada!"));
 		CategoriaDto categoriaDto = null;

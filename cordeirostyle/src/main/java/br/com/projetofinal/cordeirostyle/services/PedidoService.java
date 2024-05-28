@@ -8,12 +8,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.projetofinal.cordeirostyle.dtos.ClienteDto;
+import br.com.projetofinal.cordeirostyle.dtos.ClienteDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
 import br.com.projetofinal.cordeirostyle.dtos.RelatorioPedidoDto;
+import br.com.projetofinal.cordeirostyle.entities.Cliente;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
 import br.com.projetofinal.cordeirostyle.entities.Pedido;
@@ -27,6 +30,9 @@ public class PedidoService {
 	
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	ClienteService clienteService;
 	
 	@Autowired
 	EmailService emailService;
@@ -95,10 +101,14 @@ public class PedidoService {
 	}
 		
 	@Transactional
-	public PedidoDto save(PedidoDto pedidoDto) {
+	public PedidoDtoRetorno save(PedidoDto pedidoDto) {
 	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
 	    Pedido pedidoSalvo = pedidoRepository.save(pedido);    
-	    PedidoDto pedidoSalvoDto = modelMapper.map(pedidoSalvo, PedidoDto.class);
+	    PedidoDtoRetorno pedidoSalvoDto = modelMapper.map(pedidoSalvo, PedidoDtoRetorno.class);
+	    
+	    ClienteDto cliente = clienteService.findById(pedidoDto.getCliente().getId_cliente());
+	    ClienteDtoRetorno clienteRetorno = modelMapper.map(cliente, ClienteDtoRetorno.class);
+	    pedidoSalvoDto.setCliente(clienteRetorno);
 	    
 	    return pedidoSalvoDto;
 	}
@@ -112,7 +122,10 @@ public class PedidoService {
 				pedidoAtualizado.setData_envio(pedido.getData_envio());
 				pedidoAtualizado.setStatus(pedido.getStatus());
 				pedidoAtualizado.setValor_total(pedido.getValor_total());
-				pedidoAtualizado.setCliente(pedido.getCliente());
+				
+				ClienteDto clienteDto = clienteService.findById(pedido.getCliente().getId_cliente());
+				Cliente cliente = modelMapper.map(clienteDto, Cliente.class);
+				
 				pedidoDtoAtualizado = modelMapper.map(pedidoAtualizado, PedidoDto.class);
 				pedidoRepository.save(pedidoAtualizado);
 		}
