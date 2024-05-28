@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projetofinal.cordeirostyle.dtos.EnderecoDtoRetorno;
-import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.ItemPedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDto;
 import br.com.projetofinal.cordeirostyle.dtos.PedidoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.ProdutoDto;
-import br.com.projetofinal.cordeirostyle.dtos.ProdutoDtoRetorno;
 import br.com.projetofinal.cordeirostyle.dtos.RelatorioPedidoDto;
 import br.com.projetofinal.cordeirostyle.entities.Endereco;
 import br.com.projetofinal.cordeirostyle.entities.ItemPedido;
@@ -89,9 +87,9 @@ public class PedidoService {
 		pedidoDto.getCliente().setEnderecoDtoRetorno(enderecoDtoRetorno);
 		
 		pedidoDto.setItens(itensDto);
-		
-//		RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDto, RelatorioPedidoDto.class);
-//		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
+
+		RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoDto, RelatorioPedidoDto.class);	
+		emailService.enviarEmail(pedido.getCliente().getEmail(), "-- Relatorio do seu pedido --", relatorioPedidoDto.toString());
 		
 		return pedidoDto;
 	}
@@ -99,13 +97,9 @@ public class PedidoService {
 	@Transactional
 	public PedidoDto save(PedidoDto pedidoDto) {
 	    Pedido pedido = modelMapper.map(pedidoDto, Pedido.class);
-	    Pedido pedidoSalvo = pedidoRepository.save(pedido);
+	    Pedido pedidoSalvo = pedidoRepository.save(pedido);    
 	    PedidoDto pedidoSalvoDto = modelMapper.map(pedidoSalvo, PedidoDto.class);
-	    RelatorioPedidoDto relatorioPedidoDto = modelMapper.map(pedidoSalvo, RelatorioPedidoDto.class);
 	    
-		
-		emailService.enviarEmail("giuseppe@power.com", "little baby", relatorioPedidoDto.toString());
-
 	    return pedidoSalvoDto;
 	}
 
@@ -118,9 +112,11 @@ public class PedidoService {
 				pedidoAtualizado.setData_envio(pedido.getData_envio());
 				pedidoAtualizado.setStatus(pedido.getStatus());
 				pedidoAtualizado.setValor_total(pedido.getValor_total());
+				pedidoAtualizado.setCliente(pedido.getCliente());
 				pedidoDtoAtualizado = modelMapper.map(pedidoAtualizado, PedidoDto.class);
 				pedidoRepository.save(pedidoAtualizado);
 		}
+		
 		return pedidoDtoAtualizado;
 	}
 

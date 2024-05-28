@@ -9,13 +9,12 @@ public class RelatorioPedidoDto {
 	private LocalDate data_pedido;
 	private Double valor_total;
 	
-	private int id_item_pedido;
-	private String produto;
-	private double preco_venda;
-	private int quantidade;
-	private double percentual_desconto;
-	private double valor_bruto;
-	private double valor_liquido;
+	private List<ItemPedidoDto> itensPedido;
+
+	public RelatorioPedidoDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getId_pedido() {
 		return id_pedido;
@@ -41,82 +40,45 @@ public class RelatorioPedidoDto {
 		this.valor_total = valor_total;
 	}
 
-	public int getId_item_pedido() {
-		return id_item_pedido;
+	public List<ItemPedidoDto> getItensPedido() {
+		return itensPedido;
 	}
 
-	public void setId_item_pedido(int id_item_pedido) {
-		this.id_item_pedido = id_item_pedido;
-	}
-
-	public String getProduto() {
-		return produto;
-	}
-
-	public void setProduto(String produto) {
-		this.produto = produto;
-	}
-
-	public double getPreco_venda() {
-		return preco_venda;
-	}
-
-	public void setPreco_venda(double preco_venda) {
-		this.preco_venda = preco_venda;
-	}
-
-	public int getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public double getPercentual_desconto() {
-		return percentual_desconto;
-	}
-
-	public void setPercentual_desconto(double percentual_desconto) {
-		this.percentual_desconto = percentual_desconto;
-	}
-
-	public double getValor_bruto() {
-		return valor_bruto;
-	}
-
-	public void setValor_bruto(double valor_bruto) {
-		this.valor_bruto = valor_bruto;
-	}
-
-	public double getValor_liquido() {
-		return valor_liquido;
-	}
-
-	public void setValor_liquido(double valor_liquido) {
-		this.valor_liquido = valor_liquido;
+	public void setItensPedido(List<ItemPedidoDto> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 	
 	@Override
 	public String toString() {
-	    return String.format(
+	    StringBuilder builder = new StringBuilder();
+	    builder.append(String.format(// append serve pra concatenar para o string build
 	        "=====================================\n" +
 	        "Pedido ID      : %d\n" +
 	        "Data do Pedido : %s\n" +
-	        "Valor Total    : R$ %.2f\n" +
-	        "-------------------------------------\n" +
-	        "Item Pedido ID : %d\n" +
-	        "Produto        : %s\n" +
-	        "Preço de Venda : R$ %.2f\n" +
-	        "Quantidade     : %d\n" +
-	        "Desconto       : %.2f%%\n" +
-	        "Valor Bruto    : R$ %.2f\n" +
-	        "Valor Líquido  : R$ %.2f\n" +
-	        "=====================================\n",
-	        id_pedido, data_pedido, valor_total,
-	        id_item_pedido, produto, preco_venda, quantidade, percentual_desconto, valor_bruto, valor_liquido
-	    );
+	        "Valor Total    : R$ %.2f\n",
+	        id_pedido, data_pedido, valor_total
+	    ));
+
+	    for (ItemPedidoDto item : itensPedido) { // com o builder ele deixa acrescentar um for dentro do toString
+	        builder.append(String.format(
+	            "-------------------------------------\n" +
+	            "Item Pedido ID : %d\n" +
+	            "Produto        : %s\n" +
+	            "Preço de Venda : R$ %.2f\n" +
+	            "Quantidade     : %d\n" +
+	            "Desconto       : %.2f%%\n" +
+	            "Valor Bruto    : R$ %.2f\n" +
+	            "Valor Líquido  : R$ %.2f\n" +
+	            "=====================================\n",
+	            item.getId_item_pedido(), item.getProduto(), item.getPreco_venda(),
+	            item.getQuantidade(), item.getPercentual_desconto(),
+	            item.getValor_bruto(), item.getValor_liquido()
+	        ));
+	    }
+	    
+	    return builder.toString();
 	}
+	
 
 
 }

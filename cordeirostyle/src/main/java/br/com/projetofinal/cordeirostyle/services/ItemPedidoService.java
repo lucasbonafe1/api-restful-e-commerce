@@ -25,6 +25,7 @@ public class ItemPedidoService {
 
 	@Autowired
 	ModelMapper modelMapper;
+	
 	public List<ItemPedidoDto> findAll() {
 	    List<ItemPedido> items = itemPedidoRepository.findAll();
 	    List<ItemPedidoDto> itemsDto = new ArrayList<>();

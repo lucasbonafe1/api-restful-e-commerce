@@ -16,7 +16,7 @@ public class EmailService {
 		mailMessage.setTo(destinatario);
 		mailMessage.setSubject(assunto);
 		mailMessage.setText(mensagem);
-		mailMessage.setFrom("simas@powerguido.com");
+		mailMessage.setFrom("cordeirostyle@outlook.com");
 		
 		try {
 			emailSender.send(mailMessage);

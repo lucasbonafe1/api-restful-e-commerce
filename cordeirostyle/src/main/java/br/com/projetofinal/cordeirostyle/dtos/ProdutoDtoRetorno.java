@@ -86,9 +86,12 @@ public class ProdutoDtoRetorno {
 
 	@Override
 	public String toString() {
-		return "ProdutoDtoRetorno [id_produto=" + id_produto + ", nome=" + nome + ", descricao=" + descricao
-				+ ", valor_unitario=" + valor_unitario + ", data_cadastro=" + data_cadastro + ", categoria=" + categoria
-				+ "]";
+		return String.format(
+				"ID = %d \n" +
+				"                 nome = %s \n" +		
+				"                 descricao = %s \n" +
+				"                 valor_unitario = R$ %.2f \n", 
+				id_produto, nome, descricao, valor_unitario);
 	}
 
 }
